@@ -1,0 +1,25 @@
+
+> @basic-video-editor/next-demo@0.1.0 build /Users/qingqing/Documents/code/basic-video-editor/examples/next
+> next build
+
+▲ Next.js 16.3.7 (Turbopack)
+✓ Running next.config took 4ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 443ms
+  Running TypeScript ...
+
+  We detected TypeScript in your project and created a tsconfig.json file for you.
+  Finished TypeScript in 656ms ...
+  Collecting page data using 4 workers ...
+  Generating static pages using 4 workers (0/3) ...
+✓ Generating static pages using 4 workers (3/3) in 170ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+└ ○ /_not-found
+
+
+○  (Static)  prerendered as static content
+

@@ -1,0 +1,27 @@
+
+> basic-video-editor-workspace@ build /Users/qingqing/Documents/code/basic-video-editor
+> pnpm --filter @basic-video-editor/editor build
+
+
+> @basic-video-editor/editor@0.1.0 build /Users/qingqing/Documents/code/basic-video-editor/packages/editor
+> vite build && tsc -p tsconfig.build.json && cd ../.. && node scripts/fix-declaration-paths.mjs
+
+vite v8.3.1 building client environment for production...
+transforming...
+✓ 437 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/INTER-LICENSE.txt                     4.47 kB │ gzip:     1.99 kB
+dist/assets/editor-hLEbMGhO.wasm       4,224.07 kB │ gzip: 1,109.87 kB
+dist/style.css                            94.57 kB │ gzip:    13.69 kB
+dist/preferences-CByiDqiH.js               0.91 kB │ gzip:     0.49 kB │ map:     2.77 kB
+dist/gpu-renderer-DfPicnU1.js              0.98 kB │ gzip:     0.54 kB │ map:     2.75 kB
+dist/index.js                              2.73 kB │ gzip:     1.26 kB │ map:     7.23 kB
+dist/repositories-GOw5ptan.js              4.30 kB │ gzip:     1.59 kB │ map:    12.13 kB
+dist/id-CK3LhbcI.js                       14.83 kB │ gzip:     4.93 kB │ map:    43.22 kB
+dist/dist-g915E95f.js                     79.63 kB │ gzip:    18.25 kB │ map:   193.93 kB
+dist/custom-presets-store-EbotR8M8.js    108.68 kB │ gzip:    40.42 kB │ map:   145.30 kB
+dist/video-editor-CanMC4i4.js            419.98 kB │ gzip:   105.14 kB │ map: 1,252.16 kB
+dist/core-DwG-Jmmm.js                    511.11 kB │ gzip:   184.82 kB │ map: 1,207.72 kB
+
+✓ built in 324ms

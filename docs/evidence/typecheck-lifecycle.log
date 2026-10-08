@@ -1,0 +1,17 @@
+
+> @basic-video-editor/editor@0.1.0 typecheck /Users/qingqing/Documents/code/basic-video-editor/packages/editor
+> tsc --noEmit
+
+src/actions/keybindings/migrations/v2-to-v3.ts(1,46): error TS2307: Cannot find module '../persisted-state' or its corresponding type declarations.
+src/actions/keybindings/migrations/v2-to-v3.ts(15,42): error TS2538: Type '{}' cannot be used as an index type.
+src/actions/keybindings/migrations/v3-to-v4.ts(1,46): error TS2307: Cannot find module '../persisted-state' or its corresponding type declarations.
+src/actions/keybindings/migrations/v3-to-v4.ts(13,42): error TS2538: Type '{}' cannot be used as an index type.
+src/actions/keybindings/migrations/v4-to-v5.ts(1,46): error TS2307: Cannot find module '../persisted-state' or its corresponding type declarations.
+src/actions/keybindings/migrations/v5-to-v6.ts(1,46): error TS2307: Cannot find module '../persisted-state' or its corresponding type declarations.
+src/actions/keybindings/migrations/v6-to-v7.ts(1,46): error TS2307: Cannot find module '../persisted-state' or its corresponding type declarations.
+src/services/renderer/gpu-renderer.ts(2,2): error TS2305: Module '"opencut-wasm"' has no exported member 'applyBlurPasses'.
+src/services/renderer/nodes/blur-background-node.ts(1,39): error TS2305: Module '"@/services/renderer/blur/types"' has no exported member 'BlurUniformValue'.
+src/services/renderer/nodes/text-node.ts(3,39): error TS2305: Module '"@/services/renderer/blur/types"' has no exported member 'BlurUniformValue'.
+/Users/qingqing/Documents/code/basic-video-editor/packages/editor:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @basic-video-editor/editor@0.1.0 typecheck: `tsc --noEmit`
+Exit status 2

@@ -1,0 +1,8 @@
+
+> basic-video-editor-workspace@ typecheck /Users/qingqing/Documents/code/basic-video-editor
+> pnpm --filter @basic-video-editor/editor typecheck
+
+
+> @basic-video-editor/editor@0.1.0 typecheck /Users/qingqing/Documents/code/basic-video-editor/packages/editor
+> tsc --noEmit
+

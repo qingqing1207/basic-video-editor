@@ -1,0 +1,132 @@
+Browser tab: 647211434, Title: "127.0.0.1:5202/verification", URL: "http://127.0.0.1:5202/verification".
+1 AXWebArea 127.0.0.1:5202/verification
+	2 container
+		3 text Next.js host 
+		4 text field (settable)
+		5 container
+			6 pop up button (collapsed) Project thumbnail, ID: base-ui-_r_5_, Secondary Actions: Expand
+				7 image Project thumbnail
+			8 text field Next integration
+			9 pop up button (collapsed) Export, ID: base-ui-_r_f_, Secondary Actions: Expand
+				10 container
+					11 image
+					12 text Export
+			13 button Light
+				14 image
+				15 text Light
+		16 container
+			17 button Description: Media, ID: base-ui-_r_l_
+				18 image
+			19 button Description: Text, ID: base-ui-_r_n_
+				20 image
+			21 button Description: Captions, ID: base-ui-_r_p_
+				22 image
+			23 button Description: Settings, ID: base-ui-_r_r_
+				24 image
+		25 container
+			26 text Assets
+			27 button base-ui-_r_t_
+				28 image
+			29 pop up button (collapsed) ID: base-ui-_r_13_, Secondary Actions: Expand
+				30 image
+			31 button Import
+				32 image
+				33 text Import
+			34 list Assets
+				35 picture.png
+					36 container
+						37 image picture.png
+						38 button
+						39 text picture.png
+				40 timecode.mp4
+					41 container
+						42 container
+							43 image timecode.mp4
+							44 text 0:06
+						45 button
+						46 text timecode.mp4
+				47 tone.wav
+					48 container
+						49 image
+						50 text Audio 0:02
+						51 button
+						52 text tone.wav
+		53 splitter 25
+		54 container
+			55 container Preview canvas
+			56 button 00:00:01:00, Help: Click to edit time
+			57 text / 00:00:06:00
+			58 button
+				59 image
+			60 combo box (collapsed) Value: Fit, ID: base-ui-_r_1t_, Secondary Actions: Expand
+				61 text Fit
+			62 button
+				63 image
+		64 splitter 50
+		65 image
+		66 text It's empty here
+		67 text Click an element on the timeline to edit its properties
+		68 splitter 50
+		69 container Timeline
+			70 button base-ui-_r_25_
+				71 image
+			72 button base-ui-_r_27_
+				73 image
+			74 button base-ui-_r_29_
+				75 image
+			76 button base-ui-_r_2d_
+				77 image
+			78 button base-ui-_r_2h_
+				79 image
+			80 button base-ui-_r_2k_
+				81 image
+			82 container
+				83 button Main scene
+				84 pop up button (collapsed) ID: base-ui-_r_2r_, Secondary Actions: Expand
+					85 image
+			86 button base-ui-_r_2t_
+				87 image
+			88 button base-ui-_r_2v_
+			89 button
+				90 image
+			91 container
+				92 slider (settable, integer) Value: 0, ID: base-ui-_r_33_
+			93 button
+				94 image
+			95 container
+				96 image
+				97 image
+				98 image
+				99 image
+				100 image Video
+				101 image
+				102 image
+				103 image Video
+				104 image
+				105 image
+				106 slider Description: Timeline ruler, Value: 0
+				107 container Timeline ruler
+				108 container
+					109 container
+						110 button Select Text track track
+						111 button Local subtitle 中文
+						112 button Second cue
+					113 container
+						114 button Select Video track track
+						115 button picture.png
+							116 text picture.png
+					117 container
+						118 button Select Main Track track
+						119 button timecode.mp4
+							120 text timecode.mp4
+						121 button timecode.mp4
+							122 text timecode.mp4
+					123 container
+						124 button Select Audio track track
+						125 button tone.wav
+							126 container
+								127 text tone.wav
+				128 slider Description: Timeline playhead, Value: 120000
+		129 container Notifications
+
+The focused UI element is 1 AXWebArea 127.0.0.1:5202/verification

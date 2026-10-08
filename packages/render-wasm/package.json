@@ -1,0 +1,1 @@
+{"name":"@basic-video-editor/render-wasm","version":"0.1.0","private":true,"type":"module","files":["dist","rust","Cargo.toml","Cargo.lock","rust-toolchain.toml","LICENSE"],"exports":{".":{"types":"./dist/index.d.ts","import":"./dist/index.js"},"./editor.wasm":"./dist/opencut_wasm_bg.wasm"},"scripts":{"build":"node ../../scripts/build-wasm.mjs"}}

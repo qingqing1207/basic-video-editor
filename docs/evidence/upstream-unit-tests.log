@@ -1,0 +1,106 @@
+
+ RUN  v5.0.2 /Users/qingqing/Documents/code/basic-video-editor
+
+ ❯ opencut/apps/web/src/timeline/placement/__tests__/resolve.test.ts (14 tests | 1 failed) 5ms
+   ❯ resolveTrackPlacement (14)
+     × batch time spans reject tracks when any span overlaps 2ms
+ ❯ opencut/apps/web/src/masks/__tests__/snap.test.ts (20 tests | 3 failed) 10ms
+   ❯ mask snapping (10)
+     × snaps uniform scale handle for box masks 3ms
+     × snaps text mask movement using intrinsic text bounds 1ms
+   ❯ custom mask point insertion (3)
+     × splits a segment into two segments at the insertion point 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  opencut/apps/web/src/masks/__tests__/snap.test.ts > mask snapping > snaps uniform scale handle for box masks
+AssertionError: expected [ { type: 'vertical', …(1) }, …(1) ] to deeply equal [ { type: 'vertical', position: 100 } ]
+
+- Expected
++ Received
+
+  [
+    {
++     "position": -100,
++     "type": "vertical",
++   },
++   {
+      "position": 100,
+      "type": "vertical",
+    },
+  ]
+
+ ❯ opencut/apps/web/src/masks/__tests__/snap.test.ts:360:30
+    358|
+    359|   expect(result.params.scale).toBe(2.5);
+    360|   expect(result.activeLines).toEqual([{ type: "vertical", position: 10…
+       |                              ^
+    361|  });
+    362|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  opencut/apps/web/src/masks/__tests__/snap.test.ts > mask snapping > snaps text mask movement using intrinsic text bounds
+Error: Failed to create text measurement context
+ ❯ getTextMeasurementContext opencut/apps/web/src/text/measure-element.ts:62:8
+     60|  }
+     61|
+     62|  throw new Error("Failed to create text measurement context");
+       |        ^
+     63| }
+     64|
+ ❯ measureTextMask opencut/apps/web/src/masks/builtin/definitions/text.ts:109:8
+ ❯ Object.snap opencut/apps/web/src/masks/builtin/definitions/text.ts:264:48
+ ❯ opencut/apps/web/src/masks/__tests__/snap.test.ts:368:49
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  opencut/apps/web/src/masks/__tests__/snap.test.ts > custom mask point insertion > splits a segment into two segments at the insertion point
+AssertionError: expected { id: 'new', x: +0, y: -0.1, …(4) } to match object { id: 'new', x: +0, y: -0.1, …(4) }
+
+- Expected
++ Received
+
+  {
+    "id": "new",
+-   "inX": 0,
++   "inX": -0.1,
+    "inY": 0,
+-   "outX": 0,
++   "outX": 0.1,
+    "outY": 0,
+    "x": 0,
+    "y": -0.1,
+  }
+
+ ❯ opencut/apps/web/src/masks/__tests__/snap.test.ts:498:25
+    496|
+    497|   expect(nextPoints.map((point) => point.id)).toEqual(["a", "new", "b"…
+    498|   expect(nextPoints[1]).toMatchObject({
+       |                         ^
+    499|    id: "new",
+    500|    x: 0,
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  opencut/apps/web/src/timeline/placement/__tests__/resolve.test.ts > resolveTrackPlacement > batch time spans reject tracks when any span overlaps
+Error: mediaTime(): expected an integer tick count, got 2.5
+ ❯ requireMediaTime opencut/apps/web/src/wasm/media-time.ts:41:9
+     39| }): MediaTime {
+     40|  if (!isMediaTime(value)) {
+     41|   throw new Error(`${context}: expected an integer tick count, got ${v…
+       |         ^
+     42|  }
+     43|  return value;
+ ❯ mediaTime opencut/apps/web/src/wasm/media-time.ts:56:9
+ ❯ buildTimeSpan opencut/apps/web/src/timeline/placement/__tests__/resolve.test.ts:244:14
+ ❯ opencut/apps/web/src/timeline/placement/__tests__/resolve.test.ts:578:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  4 failed | 30 passed (34)
+   Start at  12:23:44
+   Duration  266ms (transform 62%, import 17%, setup 15%, tests 5%, worker 1%)
+

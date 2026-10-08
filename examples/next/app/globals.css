@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Host page styles. The editor's own styles are scoped under .bve-scope and are not affected by this file. */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}

@@ -1,0 +1,209 @@
+/* Semantic component rules. Utility classes remain available for deliberate layout overrides. */
+@layer components {
+  .panel {
+    background: var(--bve-panel);
+    border-radius: var(--bve-radius-panel);
+  }
+  /* Spacing between top-level editor panels; the 1px resize handle sits inside the gap. */
+  .bve-layout-gap {
+    gap: calc(var(--bve-layout-gap) - 1px);
+  }
+  .bve-layout-inset-x {
+    padding-inline: var(--bve-layout-inset);
+  }
+  .bve-layout-inset-b {
+    padding-bottom: var(--bve-layout-inset);
+  }
+  .bve-control {
+    border-radius: var(--bve-radius-control);
+    font-size: var(--bve-text-sm);
+    transition:
+      background-color var(--bve-transition-duration),
+      border-color var(--bve-transition-duration),
+      color var(--bve-transition-duration);
+  }
+  /* Keyboard focus on non-text controls: a soft halo. Text fields use border color only (see below). */
+  .bve-control:focus-visible {
+    outline: var(--bve-focus-width) solid
+      color-mix(in srgb, var(--bve-ring) 22%, transparent);
+    outline-offset: var(--bve-focus-offset);
+  }
+  .bve-control:disabled,
+  .bve-control[data-disabled],
+  .bve-menu-item[data-disabled] {
+    opacity: var(--bve-disabled-opacity);
+  }
+  .bve-control > svg {
+    width: var(--bve-icon-size);
+    height: var(--bve-icon-size);
+  }
+  .bve-size-default {
+    height: var(--bve-control-height);
+    padding-inline: var(--bve-control-padding-x);
+  }
+  .bve-size-sm {
+    height: var(--bve-control-height-sm);
+    padding-inline: var(--bve-control-padding-x);
+  }
+  .bve-size-md {
+    height: var(--bve-control-height-md);
+    padding-inline: var(--bve-control-padding-x);
+  }
+  .bve-size-lg {
+    height: var(--bve-control-height-lg);
+    padding-inline: var(--bve-control-padding-x);
+  }
+  .bve-size-icon {
+    width: var(--bve-control-height-sm);
+    height: var(--bve-control-height-sm);
+    padding: 0;
+  }
+  .bve-button {
+    gap: var(--bve-field-gap);
+    border-width: 0;
+  }
+  .bve-button-tool:active:not(:disabled):not([data-disabled]) {
+    background: var(--bve-pressed-background);
+  }
+  .bve-button-primary {
+    background: var(--bve-primary);
+    color: var(--bve-primary-foreground);
+  }
+  .bve-button-primary:hover {
+    background: var(--bve-primary-hover);
+  }
+  .bve-button-primary:active:not(:disabled) {
+    background: var(--bve-primary-pressed);
+  }
+  .bve-field {
+    border: var(--bve-border-width) solid var(--bve-input-border);
+    background: var(--bve-input);
+  }
+  .bve-field:disabled,
+  .bve-field input:disabled {
+    color: var(--bve-disabled-foreground);
+  }
+  .bve-field:hover:not(:disabled) {
+    border-color: var(--bve-border-strong);
+  }
+  .bve-field:focus-within {
+    border-color: var(--bve-ring);
+  }
+  .bve-field[aria-invalid="true"],
+  .bve-field:has([aria-invalid="true"]) {
+    border-color: var(--bve-destructive);
+  }
+  .bve-menu-item {
+    min-height: var(--bve-menu-item-height);
+    gap: var(--bve-field-gap);
+    padding: var(--bve-menu-item-padding-y) var(--bve-control-padding-x);
+    border-radius: var(--bve-radius-sm);
+  }
+  .bve-menu-item[data-highlighted],
+  .bve-menu-item[data-open] {
+    background: var(--bve-popover-hover);
+  }
+  .bve-menu-item[data-checked],
+  .bve-menu-item[data-selected] {
+    background: var(--bve-selected-background);
+  }
+  .bve-menu-item[data-checked][data-highlighted],
+  .bve-menu-item[data-selected][data-highlighted] {
+    background: var(--bve-selected-hover-background);
+  }
+  .bve-menu-surface {
+    padding: var(--bve-menu-padding);
+  }
+  .bve-overlay {
+    background: var(--bve-popover);
+    color: var(--bve-popover-foreground);
+    border: var(--bve-border-width) solid var(--bve-border);
+    border-radius: var(--bve-radius-overlay);
+    box-shadow: var(--bve-shadow-overlay);
+  }
+  .bve-dialog {
+    box-shadow: var(--bve-shadow-dialog);
+  }
+  .bve-dialog-spacing {
+    padding: var(--bve-dialog-padding);
+    gap: var(--bve-section-gap);
+  }
+  .bve-panel-spacing {
+    padding: var(--bve-panel-padding);
+    gap: var(--bve-field-gap);
+  }
+  .bve-section-gap {
+    gap: var(--bve-section-gap);
+  }
+  .bve-field-gap {
+    gap: var(--bve-field-gap);
+  }
+  .bve-overlay-layer {
+    z-index: var(--bve-z-overlay);
+  }
+  .bve-backdrop {
+    background: var(--bve-backdrop);
+  }
+  .bve-track-video {
+    background-color: var(--bve-track-video-background);
+  }
+  .bve-track-audio {
+    background-color: var(--bve-track-audio-background);
+  }
+  .bve-track-text {
+    background-color: var(--bve-track-text-background);
+  }
+  .bve-track-label {
+    color: var(--bve-track-label-color);
+    background: var(--bve-track-label-background);
+  }
+  .bve-drop-indicator {
+    background: var(--bve-drop-indicator-color);
+    height: var(--bve-drop-indicator-width);
+  }
+  .bve-playhead {
+    background: var(--bve-playhead-color);
+    border-color: var(--bve-playhead-color);
+  }
+  .bve-snap-line {
+    background: var(--bve-snap-line-color);
+  }
+  .bve-selection-box {
+    background: var(--bve-selection-fill);
+    border-color: var(--bve-cue);
+  }
+  .bve-drag-preview {
+    opacity: var(--bve-drag-preview-opacity);
+  }
+  .bve-handle {
+    background: var(--bve-preview-handle-fill);
+    border-color: var(--bve-preview-handle-border);
+  }
+  .bve-handle-selected {
+    background: var(--bve-preview-selection-color);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bve-control {
+    transition: none;
+  }
+}
+
+/* Text fields show focus through the border color only: no outline, no ring, no offset.
+   Unlayered so it wins over utility classes such as focus-visible:ring-*. */
+.bve-field:focus-visible,
+.bve-field:has(:focus-visible) {
+  box-shadow: none;
+  outline: none;
+}
+.bve-control:focus-visible:not(.bve-field) {
+  box-shadow: none;
+}
+
+/* Popups and dialogs take programmatic focus; never draw the browser's focus ring around the whole surface. */
+.bve-overlay:focus-visible,
+.bve-menu-surface:focus-visible,
+[role="dialog"]:focus-visible,
+[tabindex="-1"]:focus-visible {
+  outline: none;
+}

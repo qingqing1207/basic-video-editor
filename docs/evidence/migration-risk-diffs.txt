@@ -1,0 +1,532 @@
+--- opencut/apps/web/src/selection/selectable-item.tsx	2026-09-30 10:20:30
++++ packages/editor/src/selection/selectable-item.tsx	2026-09-30 12:28:08
+@@ -54,7 +54,7 @@
+ 			isItemSelected && "ring-1 ring-primary rounded-sm bg-primary/10",
+ 			isItemHighlighted &&
+ 				(isItemSelected
+-					? "rounded-sm shadow-[0_0_0_1px_hsl(var(--primary))]"
++          ? "rounded-sm shadow-[0_0_0_1px_hsl(var(--bve-primary))]"
+           : "ring-1 ring-primary/60 rounded-sm bg-primary/5"),
+     );
+ 
+
+--- opencut/apps/web/src/selection/selectable-surface.tsx	2026-09-30 10:20:30
++++ packages/editor/src/selection/selectable-surface.tsx	2026-09-30 12:28:08
+@@ -14,10 +14,7 @@
+ 	selectRange,
+ 	toggleSelection,
+ } from "@/selection/state";
+-import type {
+-	SelectableSurfaceProps,
+-	SelectionState,
+-} from "@/selection/types";
++import type { SelectableSurfaceProps, SelectionState } from "@/selection/types";
+ import { useBoxSelect } from "@/selection/hooks/use-box-select";
+ import { cn } from "@/utils/ui";
+ 
+@@ -198,7 +195,11 @@
+ 				return;
+ 			}
+ 
+-			if (event.key !== "Enter" && event.key !== " " && event.key !== "Escape") {
++      if (
++        event.key !== "Enter" &&
++        event.key !== " " &&
++        event.key !== "Escape"
++      ) {
+         return;
+       }
+ 
+
+--- opencut/apps/web/src/selection/state.ts	2026-09-30 10:20:30
++++ packages/editor/src/selection/state.ts	2026-09-30 12:28:08
+@@ -1,7 +1,4 @@
+-import type {
+-	BoxSelectionChange,
+-	SelectionState,
+-} from "@/selection/types";
++import type { BoxSelectionChange, SelectionState } from "@/selection/types";
+ 
+ function dedupeIds({ ids }: { ids: string[] }) {
+   return [...new Set(ids)];
+@@ -61,7 +58,7 @@
+ 	const anchorId =
+ 		state.anchorId && validIds.has(state.anchorId)
+ 			? state.anchorId
+-			: selectedIds[selectedIds.length - 1] ?? null;
++      : (selectedIds[selectedIds.length - 1] ?? null);
+   const isUnchanged =
+     selectedIds.length === state.selectedIds.length &&
+     anchorId === state.anchorId;
+@@ -94,10 +91,12 @@
+ 	id: string;
+ }): SelectionState {
+ 	if (isSelected({ state, id })) {
+-		const selectedIds = state.selectedIds.filter((selectedId) => selectedId !== id);
++    const selectedIds = state.selectedIds.filter(
++      (selectedId) => selectedId !== id,
++    );
+ 		const anchorId =
+ 			state.anchorId === id
+-				? selectedIds[selectedIds.length - 1] ?? null
++        ? (selectedIds[selectedIds.length - 1] ?? null)
+         : state.anchorId;
+     return replaceSelection({
+       ids: selectedIds,
+@@ -155,8 +154,8 @@
+ 			})
+ 		: intersectedIds;
+ 	const anchorId = isAdditive
+-		? initialAnchorId ?? intersectedIds[intersectedIds.length - 1] ?? null
+-		: intersectedIds[intersectedIds.length - 1] ?? null;
++    ? (initialAnchorId ?? intersectedIds[intersectedIds.length - 1] ?? null)
++    : (intersectedIds[intersectedIds.length - 1] ?? null);
+ 
+   return replaceSelection({
+     ids: selectedIds,
+
+--- opencut/apps/web/src/timeline/components/index.tsx	2026-09-30 10:20:30
++++ packages/editor/src/timeline/components/index.tsx	2026-09-30 12:28:09
+@@ -105,13 +105,6 @@
+ 			className="text-muted-foreground size-4 shrink-0"
+ 		/>
+ 	),
+-	graphic: <OcShapesIcon className="text-muted-foreground size-4 shrink-0" />,
+-	effect: (
+-		<HugeiconsIcon
+-			icon={MagicWand05Icon}
+-			className="text-muted-foreground size-4 shrink-0"
+-		/>
+-	),
+ };
+ 
+ export function Timeline() {
+@@ -455,9 +448,7 @@
+ 					className="relative isolate flex flex-1 flex-col overflow-hidden"
+ 					ref={tracksContainerRef}
+ 				>
+-					<SelectionBox
+-						bounds={selectionBox?.bounds ?? null}
+-					/>
++          <SelectionBox bounds={selectionBox?.bounds ?? null} />
+           <DragLine
+             dropTarget={dropTarget}
+             tracks={tracks}
+
+--- opencut/apps/web/src/timeline/controllers/resize-controller.ts	2026-09-30 10:20:30
++++ packages/editor/src/timeline/controllers/resize-controller.ts	2026-09-30 12:28:09
+@@ -32,7 +32,7 @@
+ 	type TimelineTrack,
+ } from "@/timeline";
+ import type { ElementRef } from "@/timeline/types";
+-import type { FrameRate } from "opencut-wasm";
++import type { FrameRate } from "@basic-video-editor/render-wasm";
+ 
+ // --- Session ---
+ 
+@@ -112,7 +112,8 @@
+ 		const rightNeighborBound = otherElements
+ 			.filter(
+ 				(el) =>
+-					el.startTime >= addMediaTime({ a: element.startTime, b: element.duration }),
++          el.startTime >=
++          addMediaTime({ a: element.startTime, b: element.duration }),
+       )
+       .reduce<MediaTime | null>(
+         (bound, el) =>
+@@ -314,7 +315,10 @@
+ 			) {
+ 				closestSnapDistance = snapResult.snapDistance;
+ 				closestSnapPoint = snapResult.snapPoint;
+-				deltaTime = subMediaTime({ a: snapResult.snappedTime, b: baseEdgeTime });
++        deltaTime = subMediaTime({
++          a: snapResult.snappedTime,
++          b: baseEdgeTime,
++        });
+       }
+     }
+ 
+
+--- opencut/apps/web/src/timeline/controllers/seek-controller.ts	2026-09-30 10:20:30
++++ packages/editor/src/timeline/controllers/seek-controller.ts	2026-09-30 12:28:09
+@@ -1,7 +1,12 @@
+ import type { MouseEvent as ReactMouseEvent } from "react";
+-import type { FrameRate } from "opencut-wasm";
++import type { FrameRate } from "@basic-video-editor/render-wasm";
+ import { BASE_TIMELINE_PIXELS_PER_SECOND } from "@/timeline/scale";
+-import { mediaTime, snapSeekMediaTime, TICKS_PER_SECOND, type MediaTime } from "@/wasm";
++import {
++  mediaTime,
++  snapSeekMediaTime,
++  TICKS_PER_SECOND,
++  type MediaTime,
++} from "@/wasm";
+ 
+ type SeekSource = "ruler" | "tracks";
+ 
+
+--- opencut/apps/web/src/timeline/placement/compatibility.ts	2026-09-30 10:20:30
++++ packages/editor/src/timeline/placement/compatibility.ts	2026-09-30 12:28:09
+@@ -3,9 +3,6 @@
+ const ELEMENT_TRACK_MAP: Record<ElementType, TrackType> = {
+ 	audio: "audio",
+ 	text: "text",
+-	sticker: "graphic",
+-	graphic: "graphic",
+-	effect: "effect",
+   video: "video",
+   image: "video",
+ };
+
+--- opencut/apps/web/src/timeline/placement/track-factory.ts	2026-09-30 10:20:30
++++ packages/editor/src/timeline/placement/track-factory.ts	2026-09-30 12:28:09
+@@ -1,8 +1,6 @@
+ import { DEFAULT_TRACK_NAMES } from "@/timeline/tracks";
+ import type {
+ 	AudioTrack,
+-	EffectTrack,
+-	GraphicTrack,
+   TextTrack,
+   TrackType,
+   TimelineTrack,
+@@ -42,25 +40,6 @@
+ 	name,
+ }: {
+ 	id: string;
+-	type: "graphic";
+-	name?: string;
+-}): GraphicTrack;
+-export function buildEmptyTrack({
+-	id,
+-	type,
+-	name,
+-}: {
+-	id: string;
+-	type: "effect";
+-	name?: string;
+-}): EffectTrack;
+-
+-export function buildEmptyTrack({
+-	id,
+-	type,
+-	name,
+-}: {
+-	id: string;
+   type: TrackType;
+   name?: string;
+ }): TimelineTrack;
+@@ -93,14 +72,6 @@
+ 				elements: [],
+ 				hidden: false,
+ 			};
+-		case "graphic":
+-			return {
+-				id,
+-				name: trackName,
+-				type: "graphic",
+-				elements: [],
+-				hidden: false,
+-			};
+     case "audio":
+       return {
+         id,
+@@ -108,14 +79,6 @@
+ 				type: "audio",
+ 				elements: [],
+ 				muted: false,
+-			};
+-		case "effect":
+-			return {
+-				id,
+-				name: trackName,
+-				type: "effect",
+-				elements: [],
+-				hidden: false,
+       };
+     default:
+       throw new Error(`Unsupported track type: ${type}`);
+
+--- opencut/apps/web/src/components/editable-timecode.tsx	2026-09-30 10:20:30
++++ packages/editor/src/components/editable-timecode.tsx	2026-09-30 12:28:08
+@@ -5,13 +5,9 @@
+ 	formatTimecode,
+ 	type FrameRate,
+ 	type TimeCodeFormat,
+-} from "opencut-wasm";
++} from "@basic-video-editor/render-wasm";
+ import { cn } from "@/utils/ui";
+-import {
+-	parseMediaTimecode,
+-	snapSeekMediaTime,
+-	type MediaTime,
+-} from "@/wasm";
++import { parseMediaTimecode, snapSeekMediaTime, type MediaTime } from "@/wasm";
+ 
+ interface EditableTimecodeProps {
+   time: MediaTime;
+
+--- opencut/apps/web/src/components/ui/color-picker.tsx	2026-09-30 10:20:30
++++ packages/editor/src/components/ui/color-picker.tsx	2026-09-30 12:28:08
+@@ -1,4 +1,10 @@
+-import { type ComponentProps, forwardRef, useEffect, useRef, useState } from "react";
++import {
++  type ComponentProps,
++  forwardRef,
++  useEffect,
++  useRef,
++  useState,
++} from "react";
+ import { cn } from "@/utils/ui";
+ import { Input } from "./input";
+ import {
+@@ -171,8 +177,14 @@
+ 		if (!saturationElement) return;
+ 		setIsDragging("saturation");
+ 		const rect = saturationElement.getBoundingClientRect();
+-		const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
+-		const y = Math.max(0, Math.min(1, (event.clientY - rect.top) / rect.height));
++    const x = Math.max(
++      0,
++      Math.min(1, (event.clientX - rect.left) / rect.width),
++    );
++    const y = Math.max(
++      0,
++      Math.min(1, (event.clientY - rect.top) / rect.height),
++    );
+     const newHex = appendAlpha({
+       rgbHex: hsvToHex({ h: displayHue, s: x, v: 1 - y }),
+       alpha,
+@@ -187,7 +199,10 @@
+ 		if (!hueElement) return;
+ 		setIsDragging("hue");
+ 		const rect = hueElement.getBoundingClientRect();
+-		const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
++    const x = Math.max(
++      0,
++      Math.min(1, (event.clientX - rect.left) / rect.width),
++    );
+     const newH = x * 360;
+     setInternalHue(newH);
+     if (s > 0) {
+@@ -206,7 +221,10 @@
+ 		if (!opacityElement) return;
+ 		setIsDragging("opacity");
+ 		const rect = opacityElement.getBoundingClientRect();
+-		const x = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
++    const x = Math.max(
++      0,
++      Math.min(1, (event.clientX - rect.left) / rect.width),
++    );
+     const newHex = appendAlpha({ rgbHex: rgbValue, alpha: x });
+     latestDragColorRef.current = newHex;
+     onChange?.(newHex);
+@@ -353,7 +371,10 @@
+ 					type="button"
+ 					onMouseDown={handleOpacityMouseDown}
+ 				>
+-					<div className="absolute inset-0 dark:invert" style={CHECKERBOARD_STYLE} />
++          <div
++            className="absolute inset-0 dark:invert"
++            style={CHECKERBOARD_STYLE}
++          />
+           <div
+             className="absolute inset-0 rounded-lg"
+             style={{
+
+--- opencut/apps/web/src/media/audio.ts	2026-09-30 10:20:30
++++ packages/editor/src/media/audio.ts	2026-09-30 12:28:08
+@@ -1,7 +1,6 @@
+ import type {
+ 	AudioElement,
+ 	VideoElement,
+-	LibraryAudioElement,
+   RetimeConfig,
+   SceneTracks,
+ } from "@/timeline";
+@@ -21,10 +20,7 @@
+ import { getSourceTimeAtClipTime, renderRetimedBuffer } from "@/retime";
+ import { Input, ALL_FORMATS, BlobSource, AudioBufferSink } from "mediabunny";
+ import { TICKS_PER_SECOND } from "@/wasm";
+-import {
+-	computeRmsBuckets,
+-	type SampleBucket,
+-} from "@/media/waveform-summary";
++import { computeRmsBuckets, type SampleBucket } from "@/media/waveform-summary";
+ 
+ const MAX_AUDIO_CHANNELS = 2;
+ const EXPORT_SAMPLE_RATE = 44100;
+@@ -224,21 +220,9 @@
+ 	audioContext: AudioContext;
+ }): Promise<AudioBuffer | null> {
+ 	try {
+-		if (element.sourceType === "upload") {
+ 			const asset = mediaMap.get(element.mediaId);
+ 			if (!asset) return null;
+ 			return await resolveAudioBufferForAsset({ asset, audioContext });
+-		}
+-
+-		if (element.buffer) return element.buffer;
+-
+-		const response = await fetch(element.sourceUrl);
+-		if (!response.ok) {
+-			throw new Error(`Library audio fetch failed: ${response.status}`);
+-		}
+-
+-		const arrayBuffer = await response.arrayBuffer();
+-		return await audioContext.decodeAudioData(arrayBuffer.slice(0));
+   } catch (error) {
+     console.warn("Failed to decode audio:", error);
+     return null;
+@@ -363,79 +347,6 @@
+ 	retime?: RetimeConfig;
+ }
+ 
+-async function fetchLibraryAudioSource({
+-	element,
+-	volume,
+-}: {
+-	element: LibraryAudioElement;
+-	volume: number;
+-}): Promise<AudioMixSource | null> {
+-	try {
+-		const response = await fetch(element.sourceUrl);
+-		if (!response.ok) {
+-			throw new Error(`Library audio fetch failed: ${response.status}`);
+-		}
+-
+-		const blob = await response.blob();
+-		const file = new File([blob], `${element.name}.mp3`, {
+-			type: "audio/mpeg",
+-		});
+-
+-		return {
+-			timelineElement: element,
+-			file,
+-			startTime: element.startTime / TICKS_PER_SECOND,
+-			duration: element.duration / TICKS_PER_SECOND,
+-			trimStart: element.trimStart / TICKS_PER_SECOND,
+-			trimEnd: element.trimEnd / TICKS_PER_SECOND,
+-			volume,
+-			retime: element.retime,
+-		};
+-	} catch (error) {
+-		console.warn("Failed to fetch library audio:", error);
+-		return null;
+-	}
+-}
+-
+-async function fetchLibraryAudioClip({
+-	element,
+-	muted,
+-	volume,
+-}: {
+-	element: LibraryAudioElement;
+-	muted: boolean;
+-	volume: number;
+-}): Promise<AudioClipSource | null> {
+-	try {
+-		const response = await fetch(element.sourceUrl);
+-		if (!response.ok) {
+-			throw new Error(`Library audio fetch failed: ${response.status}`);
+-		}
+-
+-		const blob = await response.blob();
+-		const file = new File([blob], `${element.name}.mp3`, {
+-			type: "audio/mpeg",
+-		});
+-
+-		return {
+-			timelineElement: element,
+-			id: element.id,
+-			sourceKey: element.id,
+-			file,
+-			startTime: element.startTime,
+-			duration: element.duration,
+-			trimStart: element.trimStart,
+-			trimEnd: element.trimEnd,
+-			volume,
+-			muted,
+-			retime: element.retime,
+-		};
+-	} catch (error) {
+-		console.warn("Failed to fetch library audio:", error);
+-		return null;
+-	}
+-}
+-
+ function collectMediaAudioSource({
+   element,
+   mediaAsset,
+@@ -513,17 +424,13 @@
+ 			});
+ 
+ 			if (element.type === "audio") {
+-				if (element.sourceType === "upload") {
++        {
+ 					const mediaAsset = mediaMap.get(element.mediaId);
+ 					if (!mediaAsset) continue;
+ 
+ 					audioMixSources.push(
+ 						collectMediaAudioSource({ element, mediaAsset, volume }),
+ 					);
+-				} else {
+-					pendingLibrarySources.push(
+-						fetchLibraryAudioSource({ element, volume }),
+-					);
+         }
+         continue;
+       }
+@@ -579,7 +486,7 @@
+ 			});
+ 
+ 			if (element.type === "audio") {
+-				if (element.sourceType === "upload") {
++        {
+           const mediaAsset = mediaMap.get(element.mediaId);
+           if (!mediaAsset) continue;
+ 
+@@ -590,10 +497,6 @@
+ 							muted,
+ 							volume,
+ 						}),
+-					);
+-				} else {
+-					pendingLibraryClips.push(
+-						fetchLibraryAudioClip({ element, muted, volume }),
+           );
+         }
+         continue;
+
+--- opencut/apps/web/src/preview/preview-coords.ts	2026-09-30 10:20:30
++++ packages/editor/src/preview/preview-coords.ts	2026-09-30 12:28:08
+@@ -8,11 +8,10 @@
+ 	viewportWidth: number;
+ }
+ 
+-function getCanvasOrigin({
+-	geometry,
+-}: {
+-	geometry: PreviewViewportGeometry;
+-}): { x: number; y: number } {
++function getCanvasOrigin({ geometry }: { geometry: PreviewViewportGeometry }): {
++  x: number;
++  y: number;
++} {
+   return {
+     x: geometry.viewportWidth / 2 - geometry.centerX * geometry.scale,
+     y: geometry.viewportHeight / 2 - geometry.centerY * geometry.scale,
+
+--- opencut/apps/web/src/masks/builtin/definitions/text.ts	2026-09-30 10:20:30
++++ packages/editor/src/masks/builtin/definitions/text.ts	2026-09-30 12:28:08
+@@ -20,10 +20,7 @@
+ 	getBoxMaskRectOverlay,
+ } from "@/masks/handle-positions";
+ import { computeFeatherUpdate } from "@/masks/param-update";
+-import {
+-	setMaskLocalCenter,
+-	toGlobalMaskSnapLines,
+-} from "@/masks/geometry";
++import { setMaskLocalCenter, toGlobalMaskSnapLines } from "@/masks/geometry";
+ import {
+   snapPosition,
+   snapRotation,

@@ -1,0 +1,26 @@
+# 迁移过程中发现并修复的回归
+
+这些不是“OpenCut 没做好的功能”。原版表现正常而抽离／UI 迁移引入的问题必须单列；部分问题由用户在已做过验收之后发现，旧验收不应被扩大解释。
+
+| 问题与用户来源 | 已确认原因／处理 | 证据与边界 |
+| --- | --- | --- |
+| 素材区无法拖入轨道 | 原版 body portal 与新 CSS 作用域不匹配，自定义拖动预览丢失 fixed / pointer-events:none；改挂编辑器自有容器 | [interaction-audit](../interaction-audit.md)：视频／图片／音频，网格／列表，Vite/Next 与宿主 dialog；不是重写时间线拖动 |
+| 音量拖动提示样式脱离作用域 | 同类 body portal 修复；构建审计拒绝自定义 portal 直挂 body | 同上，0→15dB 与一次撤销实测 |
+| 中断拖动残留状态 | 素材卸载、视图卸载、切换项目统一清理 dragSource | 同上，20 轮生命周期包括中断拖动 |
+| 时间轴鼠标缩放失效 | Base UI 单滑块回调 number 与原 number[] 接口不一致，造成 NaN；包装器归一化、控制器拒绝非有限值并恢复旧异常值 | [zoom-fix](../zoom-fix.md)：鼠标、按钮、滚轮、键盘和刷新。此前键盘通过不能替代鼠标路径 |
+| Next 每次刷新新建项目／Vite 恢复不确定 | 示例项目恢复逻辑补齐，按更新时间选择，初始化增加取消检查；后续已改为项目页及明确工程路由 | [interaction-audit](../interaction-audit.md)、[project-browser](../project-browser.md)，不要把早期“自动打开最近项目”当当前首页逻辑 |
+| 初次重开工程播放头归零 | 缺封面时补图保存提前捕获了播放头 0，改保留已存视图状态 | 同上，补图后 120000 tick 恢复及生命周期检查 |
+| 删除／撤销后快捷键焦点丢失 | 旧片段 DOM 断开且焦点退回 body 时恢复编辑器焦点，不抢宿主焦点；浮层焦点逐项适配 | [interaction-baseline](../interaction-baseline.md)，轨道菜单即时撤销见 [track-management](../track-management.md) |
+| Dialog 关闭控件旧状态选择器 | Radix data-state 遗留替换成 Base UI data-open | [interaction-audit](../interaction-audit.md) |
+| 导入与切换／关闭工程竞态 | 导入通知等待绘制时检查生命周期；整个导入登记为待完成任务，关闭等待写入完成 | [interaction-baseline](../interaction-baseline.md)、tests/import-lifecycle.test.ts |
+| 属性预览／数值拖动中卸载 | 卸载撤销临时预览并释放监听与指针锁 | 既有生命周期记录；不等于完整堆内存泄漏证明 |
+| 手动轨道管理后拖动累计空轨 | 为保留手建空轨移除了原版全局清理，本次改为只清理移动后的源空轨，并在一次状态更新中提交 | [本次修复](./track-move-cleanup.md)，不增加整轨交换或重叠禁止规则 |
+
+指示线与落点偏移的后续修复见 [拖动指示线](./drop-indicator.md)：滚动坐标、内容留白与关键帧展开高度统一。该问题没有在之前只检查落下结果的验收中覆盖。
+
+另有主动修正：图片加载失败缓存允许重试；书签行嵌套 button 改为合法 group 结构。这两项记录在 [features](../features.md)，不能与新增剪辑能力混为一谈。
+
+## 仍需跟踪
+
+- 既有轨道验收观察到：导出后预览有时停在最后一帧，播放头仍在原位，再次 seek 后恢复。尚未确定是否源自原版，本轮不声称修复。
+- 完整跨浏览器、OS 原生拖入、真实输入法及复杂交互组合缺口仍在 [交互验收边界](../interaction-baseline.md)。

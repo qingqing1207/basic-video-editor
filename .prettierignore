@@ -1,0 +1,8 @@
+opencut/
+.tools/
+node_modules/
+**/dist/
+**/.next/
+**/target/
+docs/evidence/
+pnpm-lock.yaml

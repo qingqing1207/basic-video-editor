@@ -1,0 +1,675 @@
+
+### animation/index.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -42,23 +42,7 @@
+   getCurveHandlesForNormalizedCubicBezier,
+   getNormalizedCubicBezierForScalarSegment,
+ } from "./curve-bridge";
+-
+ export {
+-  buildGraphicParamPath,
+-  isGraphicParamPath,
+-  parseGraphicParamPath,
+-  resolveGraphicParamsAtTime,
+-} from "./graphic-param-channel";
+-
+-export {
+-  buildEffectParamPath,
+-  isEffectParamPath,
+-  parseEffectParamPath,
+-  removeEffectParamKeyframe,
+-  resolveEffectParamsAtTime,
+-} from "./effect-param-channel";
+-
+-export {
+   getGroupKeyframesAtTime,
+   hasGroupKeyframeAtTime,
+   type GroupKeyframeRef,
+
+### animation/path.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -1,8 +1,5 @@
+ import type { AnimationPath, AnimationPropertyPath } from "@/animation/types";
+ import { ANIMATION_PROPERTY_PATHS } from "./types";
+-import { isEffectParamPath } from "./effect-param-channel";
+-import { isGraphicParamPath } from "./graphic-param-channel";
+-
+ const ANIMATION_PROPERTY_PATH_SET = new Set<string>(ANIMATION_PROPERTY_PATHS);
+ 
+ export function isAnimationPropertyPath(
+@@ -14,9 +11,5 @@
+ export function isAnimationPath(
+   propertyPath: string,
+ ): propertyPath is AnimationPath {
+-  return (
+-    isAnimationPropertyPath(propertyPath) ||
+-    isGraphicParamPath(propertyPath) ||
+-    isEffectParamPath(propertyPath)
+-  );
++  return isAnimationPropertyPath(propertyPath);
+ }
+
+### animation/types.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -19,8 +19,6 @@
+ ] as const;
+ 
+ export type AnimationPropertyPath = (typeof ANIMATION_PROPERTY_PATHS)[number];
+-export type GraphicParamPath = `params.${string}`;
+-export type EffectParamPath = `effects.${string}.params.${string}`;
+ export type AnimationPath = string;
+ 
+ export const ANIMATION_PROPERTY_GROUPS = {
+
+### commands/media/add-media-asset.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -1,10 +1,10 @@
+ import { Command, type CommandResult } from "@/commands/base-command";
+ import { EditorCore } from "@/core";
+-import { toast } from "@/notifications";
++import { toast } from "@/core/notify";
+ import type { MediaAsset } from "@/media/types";
+ import { generateUUID } from "@/utils/id";
+-import { storageService } from "@/services/storage/service";
+-import type { FrameRate } from "opencut-wasm";
++
++import type { FrameRate } from "@basic-video-editor/render-wasm";
+ import { hasMediaId } from "@/timeline/element-utils";
+ import { frameRatesEqual, getHighestImportedVideoFps } from "@/fps/utils";
+ import { UpdateProjectSettingsCommand } from "@/commands/project";
+@@ -50,7 +50,7 @@
+       importedAssets: [this.createdAsset],
+     });
+ 
+-    storageService
++    editor.storage
+       .saveMediaAsset({
+         projectId: this.projectId,
+         mediaAsset: this.createdAsset,
+@@ -58,6 +58,11 @@
+       .catch((error) => {
+         console.error("Failed to save media item:", error);
+ 
++        if (
++          editor.destroyed ||
++          editor.project.getActiveOrNull()?.metadata.id !== this.projectId
++        )
++          return;
+         const currentAssets = editor.media.getAssets();
+         editor.media.setAssets({
+           assets: currentAssets.filter((asset) => asset.id !== this.assetId),
+@@ -88,10 +93,16 @@
+ 
+         this.restoreProjectFpsAfterFailedSave({ editor });
+ 
+-        if (storageService.isQuotaExceededError({ error })) {
++        if (editor.storage.isQuotaExceededError({ error })) {
+           toast.error("Not enough browser storage", {
+             description: error instanceof Error ? error.message : undefined,
+           });
++        } else {
++          editor.notifications.emit({
++            type: "error",
++            title: "Unable to save imported media",
++            description: error instanceof Error ? error.message : String(error),
++          });
+         }
+       });
+ 
+@@ -104,8 +115,11 @@
+       editor.media.setAssets({ assets: this.savedAssets });
+ 
+       if (this.createdAsset) {
+-        storageService
+-          .deleteMediaAsset({ projectId: this.projectId, id: this.assetId })
++        EditorCore.getInstance()
++          .storage.deleteMediaAsset({
++            projectId: this.projectId,
++            id: this.assetId,
++          })
+           .catch((error) => {
+             console.error("Failed to delete media item on undo:", error);
+           });
+
+### commands/media/remove-media-asset.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -2,7 +2,7 @@
+ import { EditorCore } from "@/core";
+ import type { MediaAsset } from "@/media/types";
+ import { buildWaveformSourceKey } from "@/media/waveform-summary";
+-import { storageService } from "@/services/storage/service";
++
+ import { videoCache } from "@/services/video-cache/service";
+ import { waveformCache } from "@/services/waveform-cache/service";
+ import { hasMediaId } from "@/timeline/element-utils";
+@@ -74,8 +74,8 @@
+       editor.timeline.deleteElements({ elements: elementsToRemove });
+     }
+ 
+-    storageService
+-      .deleteMediaAsset({ projectId: this.projectId, id: this.assetId })
++    EditorCore.getInstance()
++      .storage.deleteMediaAsset({ projectId: this.projectId, id: this.assetId })
+       .catch((error) => {
+         console.error("Failed to delete media item:", error);
+       });
+@@ -96,8 +96,8 @@
+         ),
+       });
+ 
+-      storageService
+-        .saveMediaAsset({
++      EditorCore.getInstance()
++        .storage.saveMediaAsset({
+           projectId: this.projectId,
+           mediaAsset: restoredAsset,
+         })
+
+### commands/timeline/element/index.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -7,5 +7,4 @@
+ export { MoveElementCommand } from "./move-elements";
+ 
+ export * from "./keyframes";
+-export * from "./effects";
+ export * from "./masks";
+
+### commands/timeline/element/insert-element.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -11,7 +11,6 @@
+ import type { MediaAsset } from "@/media/types";
+ import { DEFAULT_NEW_ELEMENT_DURATION } from "@/timeline/creation";
+ import { floatToFrameRate } from "@/fps/utils";
+-import { graphicsRegistry, registerDefaultGraphics } from "@/graphics";
+ import {
+   applyPlacement,
+   canElementGoOnTrack,
+@@ -163,42 +162,10 @@
+       console.error("Element requires mediaId");
+       return false;
+     }
+-
+-    if (
+-      element.type === "audio" &&
+-      element.sourceType === "library" &&
+-      !element.sourceUrl
+-    ) {
+-      console.error("Library audio element must have sourceUrl");
+-      return false;
+-    }
+-
+-    if (element.type === "sticker" && !element.stickerId) {
+-      console.error("Sticker element must have stickerId");
+-      return false;
+-    }
+-
+-    if (element.type === "graphic") {
+-      registerDefaultGraphics();
+-      if (
+-        !element.definitionId ||
+-        !graphicsRegistry.has(element.definitionId)
+-      ) {
+-        console.error("Graphic element must have a valid definitionId");
+-        return false;
+-      }
+-    }
+-
+     if (element.type === "text" && !element.params.content) {
+       console.error("Text element must have content");
+       return false;
+     }
+-
+-    if (element.type === "effect" && !element.effectType) {
+-      console.error("Effect element must have effectType");
+-      return false;
+-    }
+-
+     return true;
+   }
+ 
+
+### commands/timeline/element/keyframes/index.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -1,6 +1,4 @@
+-export * from "./remove-effect-param-keyframe";
+ export * from "./remove-keyframe";
+ export * from "./retime-keyframe";
+ export * from "./update-scalar-keyframe-curve";
+-export * from "./upsert-effect-param-keyframe";
+ export * from "./upsert-keyframe";
+
+### commands/timeline/track/add-track.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -101,11 +101,7 @@
+   const newTrack =
+     trackType === "video"
+       ? buildEmptyTrack({ id: trackId, type: "video" })
+-      : trackType === "text"
+-        ? buildEmptyTrack({ id: trackId, type: "text" })
+-        : trackType === "graphic"
+-          ? buildEmptyTrack({ id: trackId, type: "graphic" })
+-          : buildEmptyTrack({ id: trackId, type: "effect" });
++      : buildEmptyTrack({ id: trackId, type: "text" });
+   return {
+     ...tracks,
+     overlay: [
+
+### params/registry.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -326,17 +326,8 @@
+ elementParamRegistry.register({
+   key: "text",
+   definition: [...textElementParams, ...visualElementParams],
+-});
+-elementParamRegistry.register({
+-  key: "sticker",
+-  definition: visualElementParams,
+ });
+-elementParamRegistry.register({
+-  key: "graphic",
+-  definition: visualElementParams,
+-});
+ elementParamRegistry.register({ key: "audio", definition: audioElementParams });
+-elementParamRegistry.register({ key: "effect", definition: [] });
+ 
+ export function getElementParams({
+   element,
+
+### timeline/controllers/drag-drop-controller.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -6,13 +6,10 @@
+   toElementDurationTicks,
+ } from "@/timeline/creation";
+ import { BASE_TIMELINE_PIXELS_PER_SECOND } from "@/timeline/scale";
+-import type { FrameRate } from "opencut-wasm";
++import type { FrameRate } from "@basic-video-editor/render-wasm";
+ import {
+   buildTextElement,
+-  buildGraphicElement,
+-  buildStickerElement,
+   buildElementFromMedia,
+-  buildEffectElement,
+ } from "@/timeline/element-utils";
+ import { AddTrackCommand, InsertElementCommand } from "@/commands/timeline";
+ import { BatchCommand } from "@/commands";
+@@ -54,11 +51,6 @@
+     placement: { mode: "explicit"; trackId: string };
+     element: CreateTimelineElement;
+   }) => void;
+-  addClipEffect: (args: {
+-    trackId: string;
+-    elementId: string;
+-    effectType: string;
+-  }) => void;
+ }
+ 
+ export interface DragDropConfigRef {
+@@ -90,12 +82,6 @@
+   switch (dragData.type) {
+     case "text":
+       return "text";
+-    case "graphic":
+-      return "graphic";
+-    case "sticker":
+-      return "sticker";
+-    case "effect":
+-      return "effect";
+     case "media":
+       return dragData.mediaType;
+   }
+@@ -106,7 +92,6 @@
+ }: {
+   dragData: TimelineDragData;
+ }): string[] | undefined {
+-  if (dragData.type === "effect") return dragData.targetElementTypes;
+   if (dragData.type === "media") return dragData.targetElementTypes;
+   return undefined;
+ }
+@@ -361,15 +346,6 @@
+     switch (dragData.type) {
+       case "text":
+         this.executeTextDrop({ target, dragData });
+-        return;
+-      case "graphic":
+-        this.executeGraphicDrop({ target, dragData });
+-        return;
+-      case "sticker":
+-        this.executeStickerDrop({ target, dragData });
+-        return;
+-      case "effect":
+-        this.executeEffectDrop({ target, dragData });
+         return;
+       case "media":
+         this.executeMediaDrop({ target, dragData });
+@@ -394,37 +370,6 @@
+     this.insertAtTarget({ element, target, trackType: "text" });
+   }
+ 
+-  private executeStickerDrop({
+-    target,
+-    dragData,
+-  }: {
+-    target: DropTarget;
+-    dragData: Extract<TimelineDragData, { type: "sticker" }>;
+-  }): void {
+-    const element = buildStickerElement({
+-      stickerId: dragData.stickerId,
+-      name: dragData.name,
+-      startTime: target.xPosition,
+-    });
+-    this.insertAtTarget({ element, target, trackType: "graphic" });
+-  }
+-
+-  private executeGraphicDrop({
+-    target,
+-    dragData,
+-  }: {
+-    target: DropTarget;
+-    dragData: Extract<TimelineDragData, { type: "graphic" }>;
+-  }): void {
+-    const element = buildGraphicElement({
+-      definitionId: dragData.definitionId,
+-      name: dragData.name,
+-      startTime: target.xPosition,
+-      params: dragData.params,
+-    });
+-    this.insertAtTarget({ element, target, trackType: "graphic" });
+-  }
+-
+   private executeMediaDrop({
+     target,
+     dragData,
+@@ -454,42 +399,6 @@
+     this.insertAtTarget({ element, target, trackType });
+   }
+ 
+-  private executeEffectDrop({
+-    target,
+-    dragData,
+-  }: {
+-    target: DropTarget;
+-    dragData: Extract<TimelineDragData, { type: "effect" }>;
+-  }): void {
+-    if (target.targetElement) {
+-      this.config.addClipEffect({
+-        trackId: target.targetElement.trackId,
+-        elementId: target.targetElement.elementId,
+-        effectType: dragData.effectType,
+-      });
+-      return;
+-    }
+-
+-    const element = buildEffectElement({
+-      effectType: dragData.effectType,
+-      startTime: target.xPosition,
+-    });
+-
+-    const existingEffectTrack = orderedTracks({
+-      sceneTracks: this.config.getSceneTracks(),
+-    }).find((track) => track.type === "effect");
+-
+-    if (existingEffectTrack) {
+-      this.config.insertElement({
+-        placement: { mode: "explicit", trackId: existingEffectTrack.id },
+-        element,
+-      });
+-      return;
+-    }
+-
+-    this.insertAtTarget({ element, target, trackType: "effect" });
+-  }
+-
+   private async executeFileDrop({
+     files,
+     mouseX,
+
+### timeline/controllers/resize-controller.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -32,7 +32,7 @@
+   type TimelineTrack,
+ } from "@/timeline";
+ import type { ElementRef } from "@/timeline/types";
+-import type { FrameRate } from "opencut-wasm";
++import type { FrameRate } from "@basic-video-editor/render-wasm";
+ 
+ // --- Session ---
+ 
+
+### timeline/controllers/seek-controller.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -1,5 +1,5 @@
+ import type { MouseEvent as ReactMouseEvent } from "react";
+-import type { FrameRate } from "opencut-wasm";
++import type { FrameRate } from "@basic-video-editor/render-wasm";
+ import { BASE_TIMELINE_PIXELS_PER_SECOND } from "@/timeline/scale";
+ import {
+   mediaTime,
+
+### timeline/drag.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -17,26 +17,4 @@
+   content: string;
+ }
+ 
+-export interface StickerDragData extends BaseDragData {
+-  type: "sticker";
+-  stickerId: string;
+-}
+-
+-export interface GraphicDragData extends BaseDragData {
+-  type: "graphic";
+-  definitionId: string;
+-  params: Partial<ParamValues>;
+-}
+-
+-export interface EffectDragData extends BaseDragData {
+-  type: "effect";
+-  effectType: string;
+-  targetElementTypes: VisualElement["type"][];
+-}
+-
+-export type TimelineDragData =
+-  | MediaDragData
+-  | TextDragData
+-  | StickerDragData
+-  | GraphicDragData
+-  | EffectDragData;
++export type TimelineDragData = MediaDragData | TextDragData;
+
+### timeline/element-utils.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -3,14 +3,10 @@
+   MASKABLE_ELEMENT_TYPES,
+   RETIMABLE_ELEMENT_TYPES,
+   VISUAL_ELEMENT_TYPES,
+-  type CreateEffectElement,
+-  type CreateGraphicElement,
+   type CreateTimelineElement,
+   type CreateVideoElement,
+   type CreateImageElement,
+-  type CreateStickerElement,
+   type CreateUploadAudioElement,
+-  type CreateLibraryAudioElement,
+   type TextElement,
+   type SceneTracks,
+   type TimelineElement,
+@@ -24,8 +20,6 @@
+ } from "@/timeline";
+ import { DEFAULTS } from "@/timeline/defaults";
+ import type { MediaType } from "@/media/types";
+-import { buildDefaultEffectInstance } from "@/effects";
+-import { buildDefaultGraphicInstance } from "@/graphics";
+ import type { ParamValues } from "@/params";
+ import {
+   buildDefaultParamValues,
+@@ -64,14 +58,6 @@
+   return isVisualElement(element);
+ }
+ 
+-export function hasElementEffects({
+-  element,
+-}: {
+-  element: TimelineElement;
+-}): boolean {
+-  return isVisualElement(element) && (element.effects?.length ?? 0) > 0;
+-}
+-
+ export function hasMediaId(
+   element: TimelineElement,
+ ): element is UploadAudioElement | VideoElement | ImageElement {
+@@ -118,90 +104,9 @@
+       ...buildDefaultElementParams({ type: "text" }),
+       ...(t.params ?? {}),
+     },
+-  };
+-}
+-
+-export function buildEffectElement({
+-  effectType,
+-  startTime,
+-  duration,
+-}: {
+-  effectType: string;
+-  startTime: MediaTime;
+-  duration?: MediaTime;
+-}): CreateEffectElement {
+-  const instance = buildDefaultEffectInstance({ effectType });
+-  return {
+-    type: "effect",
+-    name: capitalizeFirstLetter({ string: instance.type }),
+-    effectType,
+-    params: instance.params,
+-    duration: duration ?? DEFAULT_NEW_ELEMENT_DURATION,
+-    startTime,
+-    trimStart: ZERO_MEDIA_TIME,
+-    trimEnd: ZERO_MEDIA_TIME,
+-  };
+-}
+-
+-export function buildStickerElement({
+-  stickerId,
+-  name,
+-  startTime,
+-  intrinsicWidth,
+-  intrinsicHeight,
+-}: {
+-  stickerId: string;
+-  name?: string;
+-  startTime: MediaTime;
+-  intrinsicWidth?: number;
+-  intrinsicHeight?: number;
+-}): CreateStickerElement {
+-  const stickerNameFromId =
+-    stickerId.split(":").slice(1).pop()?.replaceAll("-", " ") ?? stickerId;
+-  return {
+-    type: "sticker",
+-    name: name ?? stickerNameFromId,
+-    stickerId,
+-    intrinsicWidth,
+-    intrinsicHeight,
+-    duration: DEFAULT_NEW_ELEMENT_DURATION,
+-    startTime,
+-    trimStart: ZERO_MEDIA_TIME,
+-    trimEnd: ZERO_MEDIA_TIME,
+-    params: buildDefaultElementParams({ type: "sticker" }),
+   };
+ }
+ 
+-export function buildGraphicElement({
+-  definitionId,
+-  name,
+-  startTime,
+-  params,
+-}: {
+-  definitionId: string;
+-  name?: string;
+-  startTime: MediaTime;
+-  params?: Partial<ParamValues>;
+-}): CreateGraphicElement {
+-  const instance = buildDefaultGraphicInstance({ definitionId });
+-  return {
+-    type: "graphic",
+-    name: name ?? capitalizeFirstLetter({ string: instance.definitionId }),
+-    definitionId: instance.definitionId,
+-    params: mergeParamValues({
+-      base: {
+-        ...buildDefaultElementParams({ type: "graphic" }),
+-        ...instance.params,
+-      },
+-      overrides: params,
+-    }),
+-    duration: DEFAULT_NEW_ELEMENT_DURATION,
+-    startTime,
+-    trimStart: ZERO_MEDIA_TIME,
+-    trimEnd: ZERO_MEDIA_TIME,
+-  };
+-}
+-
+ function mergeParamValues({
+   base,
+   overrides,
+@@ -330,37 +235,6 @@
+   }
+ }
+ 
+-export function buildLibraryAudioElement({
+-  sourceUrl,
+-  name,
+-  duration,
+-  startTime,
+-  buffer,
+-}: {
+-  sourceUrl: string;
+-  name: string;
+-  duration: MediaTime;
+-  startTime: MediaTime;
+-  buffer?: AudioBuffer;
+-}): CreateLibraryAudioElement {
+-  const element: CreateLibraryAudioElement = {
+-    type: "audio",
+-    sourceType: "library",
+-    sourceUrl,
+-    name,
+-    duration,
+-    startTime,
+-    trimStart: ZERO_MEDIA_TIME,
+-    trimEnd: ZERO_MEDIA_TIME,
+-    sourceDuration: duration,
+-    params: buildDefaultElementParams({ type: "audio" }),
+-  };
+-  if (buffer) {
+-    element.buffer = buffer;
+-  }
+-  return element;
+-}
+-
+ export function getElementsAtTime({
+   tracks,
+   time,
+
+### timeline/hooks/use-timeline-drag-drop.ts
+--- /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/old	2026-09-30 14:57:46
++++ /var/folders/r3/5tkpcl_543n3jh55rf2_yc940000gn/T/bve-review-H2vAR1/new	2026-09-30 14:57:46
+@@ -36,7 +36,6 @@
+     addMediaAsset: (args) => editor.media.addMediaAsset(args),
+     executeCommand: (command) => editor.command.execute({ command }),
+     insertElement: (args) => editor.timeline.insertElement(args),
+-    addClipEffect: (args) => editor.timeline.addClipEffect(args),
+   };
+   const configRef = useCommittedRef(config);
+   const [controller] = useState(() => new DragDropController({ configRef }));

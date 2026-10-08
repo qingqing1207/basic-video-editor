@@ -1,0 +1,59 @@
+
+> basic-video-editor-workspace@ build:examples /Users/qingqing/Documents/code/basic-video-editor
+> pnpm --filter @basic-video-editor/vite-demo build && pnpm --filter @basic-video-editor/next-demo build
+
+
+> @basic-video-editor/vite-demo@0.1.0 build /Users/qingqing/Documents/code/basic-video-editor/examples/vite
+> vite build
+
+vite v8.3.1 building client environment for production...
+transforming...
+✓ 2323 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                            0.50 kB │ gzip:     0.31 kB
+dist/assets/editor-hLEbMGhO-hLEbMGhO.wasm              4,224.07 kB │ gzip: 1,109.87 kB
+dist/assets/index-DgH46_t4.css                            92.37 kB │ gzip:    13.63 kB
+dist/assets/preferences-CByiDqiH-I9PVFbNc.js               0.68 kB │ gzip:     0.38 kB
+dist/assets/rolldown-runtime-hePW80VL.js                   0.71 kB │ gzip:     0.42 kB
+dist/assets/gpu-renderer-DfPicnU1-Bo1uDdlC.js              0.74 kB │ gzip:     0.43 kB
+dist/assets/dist-g915E95f-B1f2WOWo.js                     62.80 kB │ gzip:    17.34 kB
+dist/assets/custom-presets-store-EbotR8M8-GgYAuDHl.js    101.48 kB │ gzip:    39.37 kB
+dist/assets/HugeiconsIcon-DxMFfV-1.js                    105.55 kB │ gzip:    32.68 kB
+dist/assets/index-BWkI2OJS.js                            198.36 kB │ gzip:    63.06 kB
+dist/assets/video-editor-CanMC4i4-D0CmojUT.js            456.56 kB │ gzip:   133.17 kB
+dist/assets/core-DwG-Jmmm-BVWgOvRf.js                    977.72 kB │ gzip:   327.90 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 229ms
+
+> @basic-video-editor/next-demo@0.1.0 build /Users/qingqing/Documents/code/basic-video-editor/examples/next
+> next build
+
+▲ Next.js 16.3.7 (Turbopack)
+✓ Running next.config took 4ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 954ms
+  Running TypeScript ...
+  Finished TypeScript in 513ms ...
+  Collecting page data using 5 workers ...
+  Generating static pages using 5 workers (0/4) ...
+  Generating static pages using 5 workers (1/4) 
+  Generating static pages using 5 workers (2/4) 
+  Generating static pages using 5 workers (3/4) 
+✓ Generating static pages using 5 workers (4/4) in 171ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+└ ○ /verification
+
+
+○  (Static)  prerendered as static content
+

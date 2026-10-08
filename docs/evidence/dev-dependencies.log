@@ -1,0 +1,12 @@
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Progress: resolved 38, reused 0, downloaded 0, added 0
+Progress: resolved 221, reused 0, downloaded 0, added 0
+Progress: resolved 231, reused 0, downloaded 0, added 0, done
+
+devDependencies:
++ @napi-rs/canvas 0.1.80
++ prettier 3.6.2
+
+Packages: +3
++++
+Done in 5.7s using pnpm v10.32.1

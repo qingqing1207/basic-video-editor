@@ -1,0 +1,46 @@
+{
+  "lines": [
+    {
+      "style": "top: 380px; z-index: 20;",
+      "top": 833.1640625
+    }
+  ],
+  "rows": [
+    {
+      "height": 65,
+      "label": "Select Video track track",
+      "top": 386.1640625
+    },
+    {
+      "height": 65,
+      "label": "Select Video track track",
+      "top": 457.1640625
+    },
+    {
+      "height": 65,
+      "label": "Select Video track track",
+      "top": 528.1640625
+    },
+    {
+      "height": 50,
+      "label": "Select Audio track track",
+      "top": 670.1640625
+    },
+    {
+      "height": 25,
+      "label": "Select Text track track",
+      "top": 726.1640625
+    },
+    {
+      "height": 65,
+      "label": "Select Video track track",
+      "top": 599.1640625
+    }
+  ],
+  "scroll": [
+    {
+      "scrollTop": 107,
+      "top": 491.1640625
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+[workspace]
+resolver = "2"
+members = ["rust/crates/time", "rust/crates/bridge", "rust/crates/blur", "rust/crates/gpu", "rust/crates/masks", "rust/crates/compositor", "rust/wasm"]
+[profile.release]
+lto = true
+opt-level = "s"

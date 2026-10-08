@@ -1,0 +1,2 @@
+71d7d832818be57274ee114b1b150041f410f079  packages/editor/dist/index.js
+71d7d832818be57274ee114b1b150041f410f079  .tools/package-smoke/node_modules/@basic-video-editor/editor/dist/index.js

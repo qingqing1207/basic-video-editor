@@ -1,0 +1,13 @@
+
+> basic-video-editor-workspace@ test /Users/qingqing/Documents/code/basic-video-editor
+> vitest run
+
+
+ RUN  v5.0.2 /Users/qingqing/Documents/code/basic-video-editor
+
+
+ Test Files  14 passed (14)
+      Tests  101 passed (101)
+   Start at  18:14:34
+   Duration  2.01s (setup 55%, transform 22%, import 21%, tests 1%)
+

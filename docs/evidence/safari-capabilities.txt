@@ -1,0 +1,3 @@
+The following is a diff from the previous accessibility tree for Window: "Browser editor capabilities" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+~			86 按钮 页面菜单, ID: AssistantButton
++			96 按钮 翻译可用, ID: TranslationButton

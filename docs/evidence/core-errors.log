@@ -1,0 +1,48 @@
+src/actions/keybindings/persistence.ts(2,10): error TS2724: '"@/actions/keybinding"' has no exported member named 'isShortcutKey'. Did you mean 'ShortcutKey'?
+src/actions/keybindings/persistence.ts(4,10): error TS2724: '"@/actions"' has no exported member named 'isActionWithOptionalArgs'. Did you mean 'TActionWithOptionalArgs'?
+src/actions/keybindings/persistence.ts(67,19): error TS2345: Argument of type 'string' is not assignable to parameter of type 'ShortcutKey'.
+src/actions/keybindings/persistence.ts(116,14): error TS2345: Argument of type 'string' is not assignable to parameter of type 'ShortcutKey'.
+src/commands/timeline/track/add-track.ts(113,39): error TS2769: No overload matches this call.
+src/commands/timeline/track/add-track.ts(114,39): error TS2769: No overload matches this call.
+src/components/editor/editor-header.tsx(16,27): error TS2307: Cannot find module 'react-icons/fa6' or its corresponding type declarations.
+src/components/editor/editor-header.tsx(18,33): error TS2307: Cannot find module '@/feedback/components/feedback-popover' or its corresponding type declarations.
+src/components/editor/editor-header.tsx(20,34): error TS2307: Cannot find module '@/site/brand' or its corresponding type declarations.
+src/components/editor/editor-header.tsx(21,30): error TS2307: Cannot find module '@/site/social' or its corresponding type declarations.
+src/components/editor/panels/assets/views/settings/background.tsx(21,38): error TS2307: Cannot find module '@/services/renderer/effect-preview' or its corresponding type declarations.
+src/components/editor/panels/properties/hooks/use-keyframed-param-property.ts(5,2): error TS2305: Module '"@/animation"' has no exported member 'buildGraphicParamPath'.
+src/core/managers/project-manager.ts(26,8): error TS2307: Cannot find module '@/services/storage/migrations' or its corresponding type declarations.
+src/media/use-file-upload.ts(31,3): error TS2322: Type 'boolean | undefined' is not assignable to type 'boolean'.
+src/react/editor-layout.tsx(15,28): error TS2307: Cannot find module '@/components/editor/onboarding' or its corresponding type declarations.
+src/react/editor-layout.tsx(16,33): error TS2307: Cannot find module '@/project/components/migration-dialog' or its corresponding type declarations.
+src/react/editor-layout.tsx(19,28): error TS2307: Cannot find module '@/components/editor/mobile-gate' or its corresponding type declarations.
+src/react/editor-layout.tsx(25,39): error TS2307: Cannot find module '@/changelog/components/changelog-notification' or its corresponding type declarations.
+src/services/renderer/compositor/frame-descriptor.ts(244,35): error TS2339: Property 'effectPasses' does not exist on type 'ResolvedVisualSourceNodeState'.
+src/services/renderer/compositor/frame-descriptor.ts(295,35): error TS2339: Property 'effectPasses' does not exist on type 'ResolvedTextNodeState'.
+src/services/storage/service.ts(19,63): error TS2307: Cannot find module '@/sounds/types' or its corresponding type declarations.
+src/services/storage/service.ts(23,8): error TS2307: Cannot find module '@/services/storage/migrations' or its corresponding type declarations.
+src/subtitles/components/assets-view.tsx(21,38): error TS2307: Cannot find module '@/services/transcription/service' or its corresponding type declarations.
+src/timeline/animation-targets.ts(108,21): error TS2304: Cannot find name 'getGraphicDefinition'.
+src/timeline/animation-targets.ts(109,25): error TS2339: Property 'definitionId' does not exist on type 'TimelineElement'.
+src/timeline/animation-targets.ts(139,25): error TS2339: Property 'effects' does not exist on type 'VisualElement'.
+src/timeline/animation-targets.ts(143,21): error TS2304: Cannot find name 'effectsRegistry'.
+src/timeline/animation-targets.ts(173,29): error TS2304: Cannot find name 'parseGraphicParamPath'.
+src/timeline/animation-targets.ts(181,28): error TS2304: Cannot find name 'parseEffectParamPath'.
+src/timeline/components/timeline-element.tsx(20,2): error TS2305: Module '"@/timeline"' has no exported member 'hasElementEffects'.
+src/timeline/components/timeline-element.tsx(927,59): error TS2339: Property 'name' does not exist on type 'never'.
+src/timeline/components/timeline-element.tsx(940,10): error TS2304: Cannot find name 'resolveStickerId'.
+src/timeline/components/timeline-element.tsx(941,25): error TS2339: Property 'stickerId' does not exist on type 'never'.
+src/timeline/components/timeline-element.tsx(944,18): error TS2339: Property 'name' does not exist on type 'never'.
+src/timeline/components/timeline-element.tsx(950,59): error TS2339: Property 'name' does not exist on type 'never'.
+src/timeline/components/timeline-element.tsx(963,10): error TS2304: Cannot find name 'buildGraphicPreviewUrl'.
+src/timeline/components/timeline-element.tsx(964,28): error TS2339: Property 'definitionId' does not exist on type 'never'.
+src/timeline/components/timeline-element.tsx(965,22): error TS2339: Property 'params' does not exist on type 'never'.
+src/timeline/components/timeline-element.tsx(968,18): error TS2339: Property 'name' does not exist on type 'never'.
+src/timeline/components/timeline-element.tsx(974,59): error TS2339: Property 'name' does not exist on type 'never'.
+src/timeline/controllers/drag-drop-controller.ts(12,2): error TS2305: Module '"@/timeline/element-utils"' has no exported member 'buildGraphicElement'.
+src/timeline/controllers/drag-drop-controller.ts(13,2): error TS2724: '"@/timeline/element-utils"' has no exported member named 'buildStickerElement'. Did you mean 'buildTextElement'?
+src/timeline/controllers/drag-drop-controller.ts(15,2): error TS2724: '"@/timeline/element-utils"' has no exported member named 'buildEffectElement'. Did you mean 'buildTextElement'?
+src/timeline/controllers/drag-drop-controller.ts(89,5): error TS2366: Function lacks ending return statement and return type does not include 'undefined'.
+src/timeline/controllers/drag-drop-controller.ts(393,42): error TS2322: Type '"graphic"' is not assignable to type 'TrackType'.
+src/timeline/controllers/drag-drop-controller.ts(409,42): error TS2322: Type '"graphic"' is not assignable to type 'TrackType'.
+src/timeline/hooks/use-timeline-drag-drop.ts(39,44): error TS2339: Property 'addClipEffect' does not exist on type 'TimelineManager'.
+src/timeline/placement/insert-index.ts(14,6): error TS2367: This comparison appears to be unintentional because the types '"video" | "text"' and '"effect"' have no overlap.

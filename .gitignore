@@ -1,0 +1,18 @@
+node_modules/
+.tools/
+dist/
+.next/
+target/
+*.tsbuildinfo
+.env.local
+
+# The WASM build is committed on purpose: source-mode hosts need it and must not need a Rust toolchain.
+!packages/render-wasm/dist/
+
+# The original OpenCut checkout (read-only reference, has its own .git history).
+opencut/
+
+# Generated packages; rebuild with `pnpm pack` (see INTEGRATION.md).
+*.tgz
+.DS_Store
+

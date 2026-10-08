@@ -1,0 +1,28 @@
+{
+  "name": "basic-video-editor-workspace",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "dev": "pnpm --filter @basic-video-editor/next-demo dev",
+    "build": "pnpm --filter @basic-video-editor/editor build",
+    "typecheck": "pnpm --filter @basic-video-editor/editor typecheck",
+    "build:wasm": "pnpm --filter @basic-video-editor/render-wasm build",
+    "build:examples": "pnpm --filter @basic-video-editor/next-demo build",
+    "test": "vitest run",
+    "audit:package": "node scripts/audit-package.mjs"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "0.1.80",
+    "@tailwindcss/postcss": "4.2.1",
+    "@types/node": "24.2.1",
+    "@vitejs/plugin-react": "6.1.1",
+    "postcss": "8.5.6",
+    "postcss-prefix-selector": "2.1.1",
+    "prettier": "3.6.2",
+    "ts-morph": "26.0.0",
+    "typescript": "5.8.3",
+    "vite": "8.3.1",
+    "vitest": "5.0.2"
+  },
+  "type": "module"
+}

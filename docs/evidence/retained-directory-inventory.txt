@@ -1,0 +1,19 @@
+Compared directories: animation, commands, timeline, preview, media, masks, params, speed, retime, selection, clipboard, subtitles, text, guides, canvas, background, components/editor, core, services/renderer
+
+Original files absent from extracted package:
+animation/effect-param-channel.ts
+animation/graphic-param-channel.ts
+commands/timeline/element/effects/add-effect.ts
+commands/timeline/element/effects/index.ts
+commands/timeline/element/effects/remove-effect.ts
+commands/timeline/element/effects/reorder-effect.ts
+commands/timeline/element/effects/toggle-effect.ts
+commands/timeline/element/effects/update-effect-params.ts
+commands/timeline/element/keyframes/remove-effect-param-keyframe.ts
+commands/timeline/element/keyframes/upsert-effect-param-keyframe.ts
+components/editor/mobile-gate.tsx
+components/editor/onboarding.tsx
+services/renderer/effect-preview.ts
+services/renderer/nodes/effect-layer-node.ts
+services/renderer/nodes/graphic-node.ts
+services/renderer/nodes/sticker-node.ts

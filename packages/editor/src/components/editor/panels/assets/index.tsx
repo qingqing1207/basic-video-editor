@@ -1,0 +1,31 @@
+"use client";
+
+import { Separator } from "@/components/ui/separator";
+import {
+  type Tab,
+  useAssetsPanelStore,
+} from "@/components/editor/panels/assets/assets-panel-store";
+import { TabBar } from "./tabbar";
+import { Captions } from "@/subtitles/components/assets-view";
+import { MediaView } from "./views/assets";
+import { SettingsView } from "./views/settings";
+import { TextView } from "@/text/components/assets-view";
+
+export function AssetsPanel() {
+  const { activeTab } = useAssetsPanelStore();
+
+  const viewMap: Record<Tab, React.ReactNode> = {
+    media: <MediaView />,
+    text: <TextView />,
+    captions: <Captions />,
+    settings: <SettingsView />,
+  };
+
+  return (
+    <div className="panel flex h-full border overflow-hidden">
+      <TabBar />
+      <Separator orientation="vertical" />
+      <div className="flex-1 overflow-hidden">{viewMap[activeTab]}</div>
+    </div>
+  );
+}
