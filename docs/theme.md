@@ -155,6 +155,6 @@ font-ui/font-mono 控制界面字体，text-2xs … text-xl 控制字号。它�
 - Next：`http://127.0.0.1:5202/theme`
 - Token 页按 ref/sys/cmp 分层展示全部 token 及当前解析值；可切换预设（极简 / 旧版）、明暗、compact/comfortable、外部 portal、宿主 dialog；「真实编辑器」标签打开一个演示工程的完整编辑器（项目列表属于宿主页面，不在这里）。
 - 展示组件位于独立可选入口 `@basic-video-editor/editor/theme-preview`，不创建 EditorCore、不读写工程；普通编辑器入口不会加载展示页代码。
-- [实施与验收记录](./opencut-changes/theme-system.md)；最初设计讨论保存在 [设计方案](./theme-system-design.md)。
+- [实施与验收记录](./opencut-changes/theme-system.md)；最初设计讨论保存在 设计方案。
 
 修改 token 清单后运行 `node scripts/generate-theme.mjs`；`--check` 验证生成物与清单一致。正常 `pnpm build` 会自动生成。最终运行 `pnpm build:examples`、`pnpm test`、`pnpm audit:package`，再进行浏览器交互验证。

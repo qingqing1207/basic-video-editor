@@ -70,7 +70,7 @@ Chromium / Vite 5201，使用既有专用测试工程 `Track management verifica
 - 本轮未重复全部导出／跨浏览器验收，既有导出证据仍见 track-management.md；此次 Next 完成生产构建，不将其写成本轮全功能 UI 验证。
 
 - 自动保存后刷新：恢复 `[图片、视频、音频、空文字轨]` 四轨、三个素材、6 秒总长、124000 tick 播放头及原缩放值，没有重新出现被清理的源轨。
-- 证据：[最终页面](../evidence/track-source-cleanup.png)、[刷新后 DOM 记录](../evidence/track-source-cleanup-restored.txt)。
+- 证据：最终页面、刷新后 DOM 记录。
 
 ## 构建与产物
 

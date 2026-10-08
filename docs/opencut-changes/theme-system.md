@@ -55,7 +55,7 @@
 | 时间线缩放 | Zoom in / Zoom out 可操作，滑块值更新，未受密度影响 |
 | Next 控制台 | 主题页动态换肤、外部菜单交互后无捕获的 error 日志 |
 
-截图：[默认浅色](../evidence/theme-light-default.png)、[自定义深色](../evidence/theme-dark-custom-next.png)、[实际拖动指示线](../evidence/theme-drag-indicator.png)。
+截图：默认浅色、自定义深色、实际拖动指示线。
 
 ## 明确边界
 

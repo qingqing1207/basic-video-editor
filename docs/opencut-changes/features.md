@@ -10,7 +10,7 @@
 - 适用范围：图片与视频时间线平铺缩略图，包含横版、竖版和短片段；不改变画布变换、导出比例或时长计算。
 - 边界：视频仍重复既有缩略图，未新增沿时间轴逐帧／间隔抽帧功能。
 - 源码：[timeline-element.tsx](../../packages/editor/src/timeline/components/timeline-element.tsx)；[原版](../../opencut/apps/web/src/timeline/components/timeline-element.tsx)。
-- 验证：[比例修复记录](../thumbnail-ratio.md)；[既有浏览器截图](../evidence/timeline-thumbnail-ratio.png)。
+- 验证：比例修复记录；既有浏览器截图。
 
 ## 2. 轨道直接新增、删除、上移和下移
 
@@ -21,7 +21,7 @@
 - 删除：删除整轨及片段，不删除素材库源文件；选择状态与撤销一起处理。主视频轨删除时提升已有视频轨，删除最后视频轨仍保留一个空视频锚点，这是当前数据结构的限制。
 - 保留空轨：手动新增且未参与移动的空轨不会被全局清理。本次移动产生的源空轨按下一项处理。
 - 源码：[track-actions.tsx](../../packages/editor/src/timeline/components/track-actions.tsx)、[track-order.ts](../../packages/editor/src/timeline/track-order.ts)、[轨道命令](../../packages/editor/src/commands/timeline/track/)。
-- 验证：[既有轨道管理记录](../track-management.md)，包括 Chromium/Vite/Next、真实 MP4/WebM 及合成顺序检查。
+- 验证：既有轨道管理记录，包括 Chromium/Vite/Next、真实 MP4/WebM 及合成顺序检查。
 
 ## 3. 片段跨轨移动不再堆积源空轨道
 
@@ -36,5 +36,5 @@
 - 我们封装：可选 `ProjectBrowser` 与 `VideoEditor` 共用实例，由宿主控制页面导航；Vite/Next 使用共用宿主页面。新建、打开、重命名、复制、删除在项目页操作；Exit project 保存并返回项目页。
 - 我们补齐：DELETE 确认实际约束提交；重命名同步最新值、拒绝空名称、输入法组合期间 Enter 不提交；菜单／弹窗焦点与 Base UI 复选框适配。
 - 复制与失败：复制媒体后提交工程记录，副本使用独立工程 ID；失败清理已复制媒体、释放 Blob URL；删除／重命名错误反馈给页面。跨仓库批量操作不保证事务回滚。
-- 源码：[项目页](../../packages/editor/src/project/browser/)、[宿主示例](../../examples/shared/local-editor-app.tsx)、[原版项目页](../../opencut/apps/web/src/app/projects/page.tsx)。
+- 源码：项目页（已移出编辑器包，见 [project-browser.md](../project-browser.md)）、宿主示例（已被 `examples/next/app/` 取代）、[原版项目页](../../opencut/apps/web/src/app/projects/page.tsx)。
 - 验证：[项目管理记录](../project-browser.md)。此前永久删除的最终 UI 点击未执行，底层成功／失败路径有测试；不把确认弹窗验证写成永久删除 UI 全流程通过。

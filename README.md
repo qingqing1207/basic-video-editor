@@ -4,7 +4,7 @@
 
 **怎么集成到你的项目（Next 源码引入、打包引入、主题、验证状态）见 [INTEGRATION.md](INTEGRATION.md)。**
 
-当前验收进度及未验证边界见 [交互记录](docs/interaction-baseline.md) 和 [实施状态](docs/status.md)。不要把构建成功等同于全部交互已经验收。
+当前验收进度及未验证边界见 [实施状态](docs/status.md)。不要把构建成功等同于全部交互已经验收。
 
 ## 本地运行
 

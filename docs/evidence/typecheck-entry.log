@@ -1,8 +1,0 @@
-
-> @basic-video-editor/editor@0.1.0 typecheck /Users/qingqing/Documents/code/basic-video-editor/packages/editor
-> tsc --noEmit
-
-src/core/managers/project-manager.ts(451,13): error TS2307: Cannot find module 'opencut-wasm' or its corresponding type declarations.
-/Users/qingqing/Documents/code/basic-video-editor/packages/editor:
- ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @basic-video-editor/editor@0.1.0 typecheck: `tsc --noEmit`
-Exit status 2
