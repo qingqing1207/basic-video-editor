@@ -67,3 +67,41 @@
 - Vite 仍提示已有较大产物块；构建成功，该提示不代表已完成进一步拆包优化。
 
 接入示例与覆盖优先级见 [主题使用说明](../theme.md)，全部公开变量见 [Token 表](../theme-tokens.md)。
+
+## Token 收敛与样式改版（2026-10-07 至 2026-10-08）
+
+用户的要求：梳理 token，按设计规范重新设计，把主题样式收敛起来，方便后面优化样式；随后因为整体观感老旧（大面积灰色加浅蓝），要求整体调整颜色、圆角和边距，把「系统主题色」和「剪辑台提示线」拆开，并最终采用极简的黑白灰风格。
+
+### 结构
+
+- 三层：`ref`（原始色板）→ `sys`（语义角色）→ `cmp`（时间线、预览、控件）。只允许向下引用；原始色值只存在于 `ref`。
+- 13 个分组，由 `scripts/generate-theme.mjs` 生成默认 CSS、`tailwind.generated.css` 和 `docs/theme-tokens.md`。
+- Tailwind 默认的颜色、圆角、阴影刻度被重置，只有 token 生成工具类；源码里 36 个文件的硬编码样式改成 token。
+- `theme-guard.test.ts` 阻止硬编码样式回流；`theme-system.test.ts` 保证主按钮与轨道标签的对比度。
+
+### 迁移对照
+
+| 旧写法 | 新写法 |
+| --- | --- |
+| `rounded-md` / `rounded-lg` / `rounded-2xl` / `rounded-xs` / `rounded` | `rounded-control` / `rounded-overlay` / `rounded-panel` / `rounded-sm` / `rounded-sm` |
+| `shadow-xs/sm/md/lg`、`shadow-2xl` | `shadow-raised`、`shadow-drag` |
+| `bg-black/50..70` | `bg-scrim`（或 `bg-scrim-subtle`） |
+| `text-white`、`border-white/N` | `text-on-media`、`border-on-media/N` |
+| `text-[10px]` / `text-[11px]` / `text-[0.9rem]` | `text-2xs` / `text-xs` / `text-base` |
+| `z-10/20/50/100/250/9999` | `z-raised` / `z-sticky` / `z-overlay` / `z-overlay` / `z-toast` / `z-drag` |
+| token `text-md` | `text-base` |
+| token `overlay-z-index` | `z-overlay` |
+| token `icon-size-sm` | 已移除，直接用 `icon-size` |
+
+### 行为变化
+
+- 根背景由 `background` 改为新增的 `canvas`，默认与 `panel` 同色。宿主若覆盖过 `background` / `panel` 给页面着色，需要同时设置 `canvas`。
+- 播放头、吸附线、插入线、片段选中框、预览手柄由 `primary` 改读新增的 `cue`；换品牌色不再改变它们。
+- Button 的 `default` 变体由黑色改为品牌色；原来的黑色按钮对应新增的 `neutral` 变体。
+- 表单控件改为白底加 `input-border`；菜单选项新增 `selected-hover-background`；聚焦样式统一（输入框只变边框色，其余是极淡描边，弹层不画浏览器默认聚焦环）；选项上的 `data-[highlighted]:bg-*` 工具类会盖掉选中态，已移除。
+- 圆角 4 / 6 / 10 / 10px，字号 xs 11、sm 13、base 14、lg 16px，面板间距与外边距为 `layout-gap` / `layout-inset`（各 6px）。
+- 默认调色板为黑白灰，轨道保持彩色，`cue` 为蓝色；新增 `ref-*`、`canvas`、`input-border`、`selected-hover-background`、`cue`、`cue-fill`、`layout-gap`、`layout-inset`、`on-media`、`scrim`、`scrim-subtle`、`text-2xs`、`menu-item-padding-y`、`shadow-raised`、`shadow-drag`、`z-*` 等 token。
+
+### 方案对比
+
+主题验收页保留「极简」（当前默认）和「旧版」（改版前样式，仅用于对比）。设计过程中还评估过暖色、紫色宿主品牌等方案，已按要求删除。

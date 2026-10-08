@@ -1,64 +1,74 @@
 # Local video editor
 
-从 OpenCut `cf5e79e919144200294fb9fed22a222592a0aeea` 抽离的 React 19 本地视频剪辑台。原版保存在 `opencut/`，应用和构建不依赖该目录。采用 Base UI，保留原时间线控制器、命令系统和渲染算法。
+从 [OpenCut](https://github.com/OpenCut-app/OpenCut)（固定提交 `cf5e79e919144200294fb9fed22a222592a0aeea`）抽离的 React 19 本地视频剪辑台：采用 Base UI 和 Tailwind 4，保留原版的时间线控制器、命令系统和渲染算法，渲染与时间内核是 Rust 编译的 WASM。
 
-**怎么集成到你的项目（Next 源码引入、打包引入、主题、验证状态）见 [INTEGRATION.md](INTEGRATION.md)。**
+- 只保留本地剪辑能力，默认没有任何网络服务；项目和素材存在浏览器的 IndexedDB 与 OPFS 里。
+- **编辑器只负责「打开一个项目、编辑、自动保存、导出」**；项目列表、新建、复制、删除和页面路由由宿主实现，`examples/next/app/` 是完整的参考实现。
+- 可以放进 Next 项目（源码引入或打包引入），样式隔离在 `.bve-scope` 内，主题通过 token 定制。
 
-当前验收进度及未验证边界见 [实施状态](docs/status.md)。不要把构建成功等同于全部交互已经验收。
+整体仍在验收阶段，构建成功不等于全部交互已经验收，见 [docs/status.md](docs/status.md)。
+
+## 文档
+
+| 想做什么 | 看哪里 |
+| --- | --- |
+| 把编辑器放进我的项目 | [INTEGRATION.md](INTEGRATION.md) |
+| 查属性、事件、生命周期、存储、字体、转录 | [docs/api.md](docs/api.md) |
+| 做项目列表、新建、复制、删除 | [docs/project-management.md](docs/project-management.md) |
+| 定制外观、改主题 token | [docs/theme.md](docs/theme.md) |
+| 了解验收状态和已知限制 | [docs/status.md](docs/status.md) |
+| 全部文档 | [docs/README.md](docs/README.md) |
 
 ## 本地运行
 
-环境：Node 24.12.0、pnpm 10.32.1。使用 `pnpm install --frozen-lockfile`，然后：
+环境：Node 24.12.0、pnpm 10.32.1。
 
 ```sh
-pnpm build
+pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-`packages/render-wasm/dist` 是本项目精简源码生成的 WASM。修改 Rust 后按 [WASM 重建](docs/wasm.md) 运行 `pnpm build:wasm`，再构建编辑器。普通宿主集成不需要 Rust。
+`pnpm dev` 启动 Next 示例 `http://127.0.0.1:5202`：`/` 是项目列表，`/editor/<id>` 是剪辑页，`/theme` 是主题验收页。它直接编译 `packages/editor/src`（`BVE_SOURCE=1`），改源码会热更新；`pnpm --filter @basic-video-editor/next-demo dev:dist` 改用打包产物 `dist`，库重建后需要重启开发服务器并刷新页面。
 
 ```sh
-pnpm typecheck
-pnpm test
-pnpm build:examples
-pnpm --filter @basic-video-editor/next-demo start --port 5202
+pnpm typecheck         # 编辑器类型检查
+pnpm test              # 单元测试
+pnpm build             # 构建编辑器包（含主题生成、WASM 复制、类型声明）
+pnpm build:examples    # 构建 Next 示例
+pnpm audit:package     # 检查产物：CSS 作用域、依赖、WASM、类型
 ```
 
-`pnpm dev` 启动 Next 示例（`http://127.0.0.1:5202`）：`/` 是项目列表页，`/editor/<id>` 是剪辑页，`/theme` 是主题验收页。**项目管理（列表、搜索、排序、多选、新建、重命名、复制、删除、项目信息）和页面路由属于宿主**，示例里在 `examples/next/app/` 自己实现；编辑器包只负责打开一个项目、编辑、自动保存和导出。剪辑页左上角菜单的 **Exit project** 保存并关闭项目后调用宿主的 `onExit`，示例据此回到列表。
+`packages/render-wasm/dist` 是随仓库提交的 WASM 构建产物，普通使用不需要 Rust。改了 Rust 之后按 [docs/wasm.md](docs/wasm.md) 运行 `pnpm build:wasm`。
 
-Next 示例的 `pnpm dev` 直接编译 `packages/editor/src`（`BVE_SOURCE=1`），`pnpm dev:dist` 才使用 `dist`；`dist` 模式下库重建后要重启开发服务器并刷新页面。热替换运行中的媒体引擎不属于支持的生命周期。
-
-## 接入
+## 最小用法
 
 ```tsx
-import { createEditor, VideoEditor } from '@basic-video-editor/editor';
-import '@basic-video-editor/editor/style.css';
+import { ProjectEditor } from "@basic-video-editor/editor";
+import "@basic-video-editor/editor/style.css";
 
-// 仅在浏览器中创建；完整 React 生命周期例子见 examples/。
-const editor = await createEditor({ storageNamespace: 'my-product-editor-v1' });
-await editor.newProject('My project');
-// 在明确高度的容器中渲染：
-<VideoEditor editor={editor} theme="dark" onExport={({ blob, filename }) => {
-  // 由宿主下载或上传。库不假设业务后端。
-}} />;
-// 先卸载 React 视图，再 await editor.destroy()。
+<div style={{ height: "100vh" }}>
+  <ProjectEditor projectId={id} storageNamespace="my-app" onExit={() => router.push("/")} />
+</div>
 ```
 
-- [API、生命周期和集成](docs/integration.md)
-- [存储、字体、字幕适配](docs/adapters.md)
-- [样式与宿主浮层](docs/theme.md)
-- [功能边界与来源对应](docs/features.md)
-- [相对 OpenCut 的改动台账](docs/opencut-changes/README.md)
-- [许可和第三方来源](docs/licenses.md)
+编辑器只能在浏览器里创建（Next 里用 `dynamic(..., { ssr: false })`）；容器需要明确的高度；同一页面只能有一个编辑器。完整步骤见 [INTEGRATION.md](INTEGRATION.md)。
 
-只支持一个活动编辑器实例；第二个实例会明确拒绝。项目使用独立版本 2 单时间线格式和存储空间，不读取、迁移或清理 OpenCut 原版数据。文件默认保存在本机浏览器的 IndexedDB 和 OPFS 中。桌面 Chromium 是完整验收目标；其他浏览器按运行时编解码/GPU 能力降级，详见验收记录。
+## 仓库结构
 
-## 本地安装产物
+| 目录 | 内容 |
+| --- | --- |
+| `packages/editor` | 编辑器包（React 组件、时间线、命令、渲染、存储、主题） |
+| `packages/render-wasm` | Rust 源码和 WASM 构建产物（编辑器的内部依赖，宿主不需要单独安装） |
+| `examples/next` | Next 示例宿主：项目列表、剪辑页、主题验收页 |
+| `examples/shared` | 示例共用代码（主题验收页、预设） |
+| `scripts` | 主题生成、产物审计、WASM 构建、类型声明修复 |
+| `tests` | 跨模块的单元测试 |
+| `docs` | 文档，索引见 [docs/README.md](docs/README.md) |
+| `opencut/` | 原版 OpenCut 的只读本地参照，不随本仓库提交，构建和运行不依赖它 |
 
-`artifacts/` 里的 `.tgz` 是历史产物，可能已过期。现在宿主只需要安装 editor 一个包（`render-wasm` 已作为内部实现打进去），重新打包的步骤见 [INTEGRATION.md](INTEGRATION.md)。
+## 约束与来源
 
-```sh
-pnpm audit:package
-```
-
-开发验收页：Next 示例的 `/theme` 验证主题、token、原生 dialog 内的外置浮层，以及宿主样式与编辑器样式互不影响。它是验收工具，不属于编辑器包的产品界面。
+- 只支持一个活动编辑器实例；工程使用独立的 version 2 单时间线格式，不读取、迁移或清理 OpenCut 原版数据。
+- 桌面 Chromium 是完整验收目标；其他浏览器按运行时的编解码和 GPU 能力降级。
+- 包是 `private`，没有发布到公共仓库，打包和分发见 [INTEGRATION.md](INTEGRATION.md#3-方式-b打包引入)。
+- 许可与第三方来源见 [docs/licenses.md](docs/licenses.md)；相对 OpenCut 的改动见 [docs/opencut-changes/README.md](docs/opencut-changes/README.md)。

@@ -8,7 +8,7 @@
 | 音量拖动提示样式脱离作用域 | 同类 body portal 修复；构建审计拒绝自定义 portal 直挂 body | 同上，0→15dB 与一次撤销实测 |
 | 中断拖动残留状态 | 素材卸载、视图卸载、切换项目统一清理 dragSource | 同上，20 轮生命周期包括中断拖动 |
 | 时间轴鼠标缩放失效 | Base UI 单滑块回调 number 与原 number[] 接口不一致，造成 NaN；包装器归一化、控制器拒绝非有限值并恢复旧异常值 | zoom-fix：鼠标、按钮、滚轮、键盘和刷新。此前键盘通过不能替代鼠标路径 |
-| Next 每次刷新新建项目／Vite 恢复不确定 | 示例项目恢复逻辑补齐，按更新时间选择，初始化增加取消检查；后续已改为项目页及明确工程路由 | interaction-audit、[project-browser](../project-browser.md)，不要把早期“自动打开最近项目”当当前首页逻辑 |
+| Next 每次刷新新建项目／Vite 恢复不确定 | 示例项目恢复逻辑补齐，按更新时间选择，初始化增加取消检查；后续已改为项目页及明确工程路由 | interaction-audit、[project-management](../project-management.md)，不要把早期“自动打开最近项目”当当前首页逻辑 |
 | 初次重开工程播放头归零 | 缺封面时补图保存提前捕获了播放头 0，改保留已存视图状态 | 同上，补图后 120000 tick 恢复及生命周期检查 |
 | 删除／撤销后快捷键焦点丢失 | 旧片段 DOM 断开且焦点退回 body 时恢复编辑器焦点，不抢宿主焦点；浮层焦点逐项适配 | interaction-baseline，轨道菜单即时撤销见 track-management |
 | Dialog 关闭控件旧状态选择器 | Radix data-state 遗留替换成 Base UI data-open | interaction-audit |

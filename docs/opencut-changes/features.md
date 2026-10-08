@@ -29,12 +29,12 @@
 
 这也是对第 2 项移除全局清理后造成的回归修复；不能描述成“原版完全没有空轨清理”。详见 [规则、实现和验收](./track-move-cleanup.md)。
 
-## 4. 独立项目管理页面及项目操作补齐
+## 4. 独立项目管理页面及项目操作补齐（现由宿主实现）
 
 - 需求来源：用户要求参考原版项目页，移除剪辑页面顶部的 demo 按钮条。
 - 原版已有：项目网格／列表、搜索排序、多选、卡片与操作菜单；这些主要是复用，不是我们从零新增。
-- 我们封装：可选 `ProjectBrowser` 与 `VideoEditor` 共用实例，由宿主控制页面导航；Vite/Next 使用共用宿主页面。新建、打开、重命名、复制、删除在项目页操作；Exit project 保存并返回项目页。
+- 当时的封装：可选 `ProjectBrowser` 与 `VideoEditor` 共用实例，由宿主控制页面导航，新建、打开、重命名、复制、删除在项目页操作，Exit project 保存并返回项目页。**2026-10-08 起项目页移出编辑器包，由 Next 示例自己实现**，见 [项目管理移出编辑器包](./project-management.md)。
 - 我们补齐：DELETE 确认实际约束提交；重命名同步最新值、拒绝空名称、输入法组合期间 Enter 不提交；菜单／弹窗焦点与 Base UI 复选框适配。
 - 复制与失败：复制媒体后提交工程记录，副本使用独立工程 ID；失败清理已复制媒体、释放 Blob URL；删除／重命名错误反馈给页面。跨仓库批量操作不保证事务回滚。
-- 源码：项目页（已移出编辑器包，见 [project-browser.md](../project-browser.md)）、宿主示例（已被 `examples/next/app/` 取代）、[原版项目页](../../opencut/apps/web/src/app/projects/page.tsx)。
-- 验证：[项目管理记录](../project-browser.md)。此前永久删除的最终 UI 点击未执行，底层成功／失败路径有测试；不把确认弹窗验证写成永久删除 UI 全流程通过。
+- 源码：现在是 `examples/next/app/`（说明见 [project-management.md](../project-management.md)）；原版项目页是 `opencut/apps/web/src/app/projects/page.tsx`（本地只读参照，不随仓库提交）。
+- 验证：见 [项目管理移出编辑器包](./project-management.md)。此前永久删除的最终 UI 点击未执行，底层成功／失败路径有测试；不把确认弹窗验证写成永久删除 UI 全流程通过。

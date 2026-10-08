@@ -15,7 +15,7 @@
 | 网站工程格式／历史迁移 | 自有存储命名空间；当前 version 2 单时间线，工程按 ID 隔离，JSON/元数据在 IndexedDB、媒体在 OPFS；不读取原版浏览器数据 |
 | 应用下载流程 | 导出返回 Blob，由宿主下载或接上传；提供 Vite/Next 示例消费实际构建产物 |
 
-源码入口：`packages/editor/src/index.tsx`、`api/`、`react/`、`browser/`、`components/ui/`、`services/storage/`、`packages/render-wasm/`。精确接入见 [integration](../integration.md)、[adapters](../adapters.md)、[theme](../theme.md)、[wasm](../wasm.md)、[许可](../licenses.md)。
+源码入口：`packages/editor/src/index.tsx`、`api/`、`react/`、`browser/`、`components/ui/`、`services/storage/`、`packages/render-wasm/`。精确接入见 [api](../api.md)、[project-management](../project-management.md)、[theme](../theme.md)、[wasm](../wasm.md)、[许可](../licenses.md)。
 
 ## 字幕、字体与渲染
 
