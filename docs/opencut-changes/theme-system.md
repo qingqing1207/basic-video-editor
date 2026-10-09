@@ -121,3 +121,9 @@
 - 页面 `canvas` 浅色 `#f4f4f5`、面板 `panel` 白色，面板保留细边框（`border` token），与一档明度差一起分区；深色保持页面最深、面板稍亮。
 - 编辑提示色 `cue`（播放头、吸附线、拖放指示、选中片段、预览选框和参考线）保持蓝色：它是界面里唯一的彩色，专门用于操作线，在任意视频画面和轨道上都清晰。
 - 面板和浮层圆角 10→8px，控件 6px、小元素 4px 不变。
+
+### Logo 与顶栏（2026-10-09）
+
+- 新 logo：圆角方块中间挖出播放三角，`components/editor/editor-logo.tsx` 内联 SVG，填充 `currentColor`，深浅色自动跟随文字色，不再用 `invert` 反色图片。
+- 浏览器图标：`assets/logo.svg` 与 `examples/next/app/icon.svg` 内嵌 `prefers-color-scheme`，浅色标签页用深色图标，深色标签页用浅色图标。
+- 顶栏高度 3.4rem（约 54px）→ 44px。

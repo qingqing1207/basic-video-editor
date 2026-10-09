@@ -15,13 +15,13 @@ import { useEditor } from "@/editor/use-editor";
 import { CommandIcon, Logout05Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { ShortcutsDialog } from "@/actions/components/shortcuts-dialog";
-import Image from "@/components/ui/media-image";
+import { EditorLogo } from "./editor-logo";
 import { cn } from "@/utils/ui";
 import { useEditorUI } from "@/react/ui-context";
 
 export function EditorHeader() {
   return (
-    <header className="flex h-[3.4rem] items-center justify-between px-3 pt-0.5">
+    <header className="flex h-11 items-center justify-between px-3">
       <div className="flex items-center gap-1">
         <ProjectDropdown />
         <EditableProjectName />
@@ -59,13 +59,7 @@ function ProjectDropdown() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="p-1 rounded-sm size-8">
-            <Image
-              src={DEFAULT_LOGO_URL}
-              alt="Project thumbnail"
-              width={32}
-              height={32}
-              className="invert dark:invert-0 size-5"
-            />
+            <EditorLogo />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="z-overlay w-44">
@@ -166,4 +160,3 @@ function EditableProjectName() {
     />
   );
 }
-const DEFAULT_LOGO_URL = new URL("../../assets/logo.svg", import.meta.url).href;
