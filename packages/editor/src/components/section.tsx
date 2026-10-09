@@ -70,7 +70,7 @@ export function Section({
         className={cn(
           "flex flex-col",
           showTopBorder && "border-t first:border-t-0",
-          showBottomBorder && "border-b",
+          showBottomBorder && "border-b last:border-b-0",
           className,
         )}
       >
