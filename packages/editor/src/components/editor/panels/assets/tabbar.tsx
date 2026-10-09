@@ -98,13 +98,12 @@ function FadeOverlay({
   direction: "top" | "bottom";
   show: boolean;
 }) {
+  if (!show) return null;
   return (
     <div
       className={cn(
-        "pointer-events-none absolute right-0 left-0 h-6",
-        direction === "top" && show
-          ? "from-background top-0 bg-linear-to-b to-transparent"
-          : "from-background bottom-0 bg-linear-to-t to-transparent",
+        "from-panel pointer-events-none absolute right-0 left-0 h-6 to-transparent",
+        direction === "top" ? "top-0 bg-linear-to-b" : "bottom-0 bg-linear-to-t",
       )}
     />
   );
