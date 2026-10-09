@@ -97,6 +97,17 @@ describe("track management", () => {
     expect(ids(tracks)).toEqual(["main", "audio", "top", "middle"]);
     expect(tracks.main.elements[0]).toBe(clip);
   });
+  it("adds a track without an index at the end of the list for every type, with undo", () => {
+    for (const type of ["video", "text", "audio"] as const) {
+      const before = ids(tracks);
+      const add = new AddTrackCommand({ type });
+      commands.execute({ command: add });
+      expect(ids(tracks)).toEqual([...before, add.getTrackId()]);
+      expect(getOrderedTracks(tracks).at(-1)?.type).toBe(type);
+      commands.undo();
+      expect(ids(tracks)).toEqual(before);
+    }
+  });
   it("keeps explicitly added empty tracks through subsequent commands", () => {
     const add = new AddTrackCommand({ type: "text", index: 4 });
     commands.execute({ command: add });

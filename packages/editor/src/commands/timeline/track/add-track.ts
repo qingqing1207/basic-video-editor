@@ -1,12 +1,9 @@
-import { insertTrackAtIndex } from "@/timeline/track-order";
+import { getOrderedTracks, insertTrackAtIndex } from "@/timeline/track-order";
 import { Command, type CommandResult } from "@/commands/base-command";
 import type { TimelineTracks, TrackType } from "@/timeline";
 import { generateUUID } from "@/utils/id";
 import { EditorCore } from "@/core";
-import {
-  buildEmptyTrack,
-  getDefaultInsertIndexForTrack,
-} from "@/timeline/placement";
+import { buildEmptyTrack } from "@/timeline/placement";
 
 export class AddTrackCommand extends Command {
   private trackId: string;
@@ -26,12 +23,9 @@ export class AddTrackCommand extends Command {
     const editor = EditorCore.getInstance();
     this.savedState = editor.document.getTimeline().tracks;
 
+    // Without an explicit index a new track goes to the end of the list, whatever its type.
     const insertIndex =
-      this.index ??
-      getDefaultInsertIndexForTrack({
-        tracks: this.savedState,
-        trackType: this.type,
-      });
+      this.index ?? getOrderedTracks(this.savedState).length;
 
     const updatedTracks = insertTrackAtIndex(
       this.savedState,
