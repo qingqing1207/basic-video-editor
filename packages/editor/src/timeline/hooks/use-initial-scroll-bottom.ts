@@ -4,7 +4,7 @@ interface UseInitialScrollBottomProps {
   tracksScrollRef: RefObject<HTMLDivElement | null>;
   trackLabelsScrollRef: RefObject<HTMLDivElement | null>;
   onAfterScroll?: () => void;
-  /** Defers the scroll until there is at least one track to measure against. */
+  /** Defers the scroll until there is more than one track: a single track is always shown from its top. */
   isReady: boolean;
 }
 

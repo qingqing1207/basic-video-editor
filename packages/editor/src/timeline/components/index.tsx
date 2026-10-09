@@ -25,6 +25,7 @@ import { useTimelineZoom } from "@/timeline/hooks/use-timeline-zoom";
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -287,7 +288,7 @@ export function Timeline() {
     tracksScrollRef,
     trackLabelsScrollRef,
     onAfterScroll: () => saveScrollPositionRef.current(),
-    isReady: tracks.length > 0,
+    isReady: tracks.length > 1,
   });
 
   const { dragView, handleElementMouseDown, handleElementClick } =
@@ -377,6 +378,18 @@ export function Timeline() {
   );
   const hasHorizontalScrollbar =
     dynamicTimelineWidth > (tracksViewportWidth || containerWidth);
+
+  // With a single track the only thing that can overflow is the horizontal scrollbar, so keep
+  // that track fully visible instead of leaving it partly scrolled under the ruler.
+  useLayoutEffect(() => {
+    if (tracks.length > 1) return;
+    const viewport = tracksScrollRef.current;
+    if (!viewport || viewport.scrollTop === 0) return;
+    viewport.scrollTop = 0;
+    if (trackLabelsScrollRef.current)
+      trackLabelsScrollRef.current.scrollTop = 0;
+    saveScrollPositionRef.current();
+  }, [tracks.length, hasHorizontalScrollbar]);
 
   useEdgeAutoScroll({
     isActive: bookmarkDragState.isDragging,
