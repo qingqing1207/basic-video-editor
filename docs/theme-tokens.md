@@ -108,7 +108,7 @@
 
 | 变量 | 类型 | 浅色默认 | 深色默认 | comfortable | Tailwind |
 | --- | --- | --- | --- | --- | --- |
-| `--bve-cue` | color | `var(--bve-ref-neutral-850)` | `var(--bve-ref-neutral-100)` | — | `bg-/text-/border-cue` |
+| `--bve-cue` | color | `var(--bve-ref-blue-600)` | `var(--bve-ref-blue-400)` | — | `bg-/text-/border-cue` |
 | `--bve-cue-fill` | color | `color-mix(in srgb, var(--bve-cue) 14%, transparent)` | 同浅色 | — | `bg-/text-/border-cue-fill` |
 
 ### 状态色

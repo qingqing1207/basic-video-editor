@@ -202,7 +202,7 @@ export const editorTokenDefinitions = {
   }),
 
   ...section("cue", {
-    cue: color(ref("neutral-850"), ref("neutral-100")),
+    cue: color(ref("blue-600"), ref("blue-400")),
     "cue-fill": color(mix(sys("cue"), 14)),
   }),
 
