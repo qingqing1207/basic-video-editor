@@ -164,6 +164,8 @@ function clampViewportCenter({
   };
 }
 
+const FIT_MARGIN = 10;
+
 function getFitScale({
   canvasHeight,
   canvasWidth,
@@ -184,7 +186,11 @@ function getFitScale({
     return 1;
   }
 
-  return Math.min(viewportWidth / canvasWidth, viewportHeight / canvasHeight);
+  // Leave room around the fitted canvas so corner handles of a full-frame
+  // selection are not cut off by the viewport edge.
+  const availableWidth = Math.max(viewportWidth - FIT_MARGIN * 2, 1);
+  const availableHeight = Math.max(viewportHeight - FIT_MARGIN * 2, 1);
+  return Math.min(availableWidth / canvasWidth, availableHeight / canvasHeight);
 }
 
 function getClampedZoom({ zoom }: { zoom: number }): number {
