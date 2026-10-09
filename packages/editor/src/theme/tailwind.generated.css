@@ -46,6 +46,7 @@
   --color-caution: var(--bve-caution);
   --color-caution-foreground: var(--bve-caution-foreground);
   --color-on-media: var(--bve-on-media);
+  --color-media-backdrop: var(--bve-media-backdrop);
   --color-scrim: var(--bve-scrim);
   --color-scrim-subtle: var(--bve-scrim-subtle);
   --font-sans: var(--bve-font-ui);

@@ -15,12 +15,14 @@
 - [x] 依赖、构建引用和 CSS 隔离审计（`pnpm audit:package`）；自动化测试和类型检查。
 - [x] 项目管理移到宿主（Next 示例的 `/` 列表页和 `/editor/[id]` 剪辑页），高层组件 `ProjectEditor`（见 [project-management.md](project-management.md)）。
 - [x] 主题系统与 token 收敛，主题验收页（见 [theme.md](theme.md)）。
+- [x] 视频裁剪组件 `VideoTrimmer` 和导入时剪辑弹窗（见 [trimmer.md](trimmer.md)）：Chromium 内置浏览器里验证了选区拖动、两端吸附、时间刻度、裁出新文件、多视频切换、Reset、Import all 和 Cancel。
 
 ## 未完成
 
 - [ ] 系统文件的原生拖放、真实操作系统输入法，以及未覆盖的复杂交互组合。
 - [ ] Firefox 的能力和可用功能。
 - [ ] 用真实视频素材复制项目的端到端验证（素材拷贝和失败回滚目前只有单元测试）。
+- [ ] 视频裁剪：时间线拖入文件和粘贴两个导入入口的弹窗没有逐个手动验证；很长的视频、手机拍的 MOV、不支持 WebCodecs 的浏览器未测；MP4 预览在内置浏览器里截不到画面，需在真实 Chrome 里确认。
 
 ## 各引入方式的验证状态
 

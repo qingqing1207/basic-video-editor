@@ -7,7 +7,7 @@
 - “Tailwind”列是该 token 对应的工具类；没有对应工具类的 token 只能通过 `var(--bve-*)` 使用。
 - 三层关系：`ref`（原始色板）→ `sys`（语义角色）→ `cmp`（组件 token）。组件代码只允许使用 sys / cmp。
 
-共 142 个 token。
+共 143 个 token。
 
 ## Ref · 原始色板（31）
 
@@ -51,7 +51,7 @@
 | `--bve-ref-teal-600` | color | `#337d69` | 同浅色 | — | — |
 | `--bve-ref-orange-400` | color | `#ff9a42` | 同浅色 | — | — |
 
-## Sys · 语义角色（89）
+## Sys · 语义角色（90）
 
 表面、操作、状态、字体、形状、尺寸、层级。宿主定制主题时覆盖这一层。
 
@@ -131,6 +131,7 @@
 | 变量 | 类型 | 浅色默认 | 深色默认 | comfortable | Tailwind |
 | --- | --- | --- | --- | --- | --- |
 | `--bve-on-media` | color | `var(--bve-ref-white)` | 同浅色 | — | `bg-/text-/border-on-media` |
+| `--bve-media-backdrop` | color | `var(--bve-ref-black)` | 同浅色 | — | `bg-/text-/border-media-backdrop` |
 | `--bve-scrim` | color | `color-mix(in srgb, var(--bve-ref-black) 60%, transparent)` | 同浅色 | — | `bg-/text-/border-scrim` |
 | `--bve-scrim-subtle` | color | `color-mix(in srgb, var(--bve-ref-black) 35%, transparent)` | 同浅色 | — | `bg-/text-/border-scrim-subtle` |
 

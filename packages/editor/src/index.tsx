@@ -102,7 +102,60 @@ export async function createProjectRecord({
   const { createProjectRecord: create } = await import("./project/record");
   return create({ name });
 }
+export interface VideoTrimmerProps {
+  /** The source video. It is read in the browser and never uploaded. */
+  file: File;
+  /** Initial selection in seconds. Defaults to the whole video. */
+  defaultRange?: { start: number; end: number };
+  /** The selection changed: once when the video loads (the initial selection), then while dragging and on keyboard changes. */
+  onRangeChange?: (range: { start: number; end: number }) => void;
+  /** Shortest selection in seconds. Defaults to 0.1. */
+  minDuration?: number;
+  /** Longest selection in seconds. Unrestricted by default. */
+  maxDuration?: number;
+  /** Ready to trim, trimming, and progress (0 to 1). Use it to drive your own buttons and progress display. */
+  onStatusChange?: (status: VideoTrimmerStatus) => void;
+  /** The video could not be read or decoded. The component then renders nothing, so show your own message. */
+  onError?: (error: Error) => void;
+  theme?: "light" | "dark";
+  defaultTheme?: "light" | "dark";
+  appearance?: EditorAppearance;
+  density?: EditorDensity;
+  className?: string;
+  style?: CSSProperties;
+  /** Shown while the component code loads. Defaults to a centered spinner. */
+  fallback?: ReactNode;
+}
+export interface VideoTrimmerStatus {
+  /** The video is read and a selection exists, so `trim()` can run. */
+  ready: boolean;
+  trimming: boolean;
+  /** 0 to 1 while trimming. */
+  progress: number;
+}
+export interface VideoTrimmerHandle {
+  /** Trims the current selection and resolves with the new file. Rejects with `TrimCanceledError` after `cancel()`, or with the failure. */
+  trim: () => Promise<TrimResult>;
+  /** Stops a running trim. */
+  cancel: () => void;
+  getRange: () => { start: number; end: number } | null;
+}
+export type { TrimResult } from "./trimmer/trim-file";
+export { TrimCanceledError } from "./trimmer/errors";
+import type { TrimResult } from "./trimmer/trim-file";
+/** Cuts `[start, end]` seconds out of a video file in the browser. Loads the media engine on first use. */
+export async function trimVideo(options: {
+  file: File;
+  start: number;
+  end: number;
+  onProgress?: (progress: number) => void;
+  signal?: AbortSignal;
+}): Promise<TrimResult> {
+  const { trimVideoFile } = await import("./trimmer/trim-file");
+  return trimVideoFile(options);
+}
 const EditorView = lazy(() => import("./react/video-editor"));
+const VideoTrimmerView = lazy(() => import("./trimmer/video-trimmer-view"));
 const ProjectEditorView = lazy(() => import("./react/project-editor"));
 function EditorLoading() {
   return (
@@ -118,9 +171,28 @@ function EditorLoading() {
       }}
     >
       <svg viewBox="0 0 24 24" width={32} height={32} fill="none" aria-hidden>
-        <circle cx="12" cy="12" r="9" stroke="currentColor" strokeOpacity={0.15} strokeWidth={3} />
-        <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth={3} strokeLinecap="round">
-          <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite" />
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+          stroke="currentColor"
+          strokeOpacity={0.15}
+          strokeWidth={3}
+        />
+        <path
+          d="M21 12a9 9 0 0 0-9-9"
+          stroke="currentColor"
+          strokeWidth={3}
+          strokeLinecap="round"
+        >
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            from="0 12 12"
+            to="360 12 12"
+            dur="0.8s"
+            repeatCount="indefinite"
+          />
         </path>
       </svg>
     </div>
@@ -169,3 +241,22 @@ export type {
   TimelineTracks,
 } from "./timeline/types";
 export { detectCapabilities } from "./browser/capabilities";
+/** A compact trimmer: pick the part of an uploaded video you want and get it back as a new file. */
+export function VideoTrimmer({
+  ref,
+  fallback,
+  ...props
+}: VideoTrimmerProps & { ref?: Ref<VideoTrimmerHandle> }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const loading = fallback ?? <EditorLoading />;
+  return mounted ? (
+    <Suspense fallback={loading}>
+      <VideoTrimmerView ref={ref} {...props} />
+    </Suspense>
+  ) : (
+    <div data-trimmer-placeholder="" style={{ width: "100%" }}>
+      {loading}
+    </div>
+  );
+}

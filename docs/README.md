@@ -7,6 +7,7 @@
 | 文档 | 内容 |
 | --- | --- |
 | [api.md](api.md) | 接口参考：`ProjectEditor` / `VideoEditor` 属性、`createEditor` 和实例方法、生命周期规则、自动保存事件、存储接口、字体与转录提供方、产物与 TypeScript |
+| [trimmer.md](trimmer.md) | 视频裁剪组件 `VideoTrimmer` 和 `trimVideo`：属性、交互、输出文件、限制 |
 | [project-management.md](project-management.md) | 宿主侧的项目管理：列表、新建、重命名、复制、删除，数据从哪里来，参考实现 |
 | [theme.md](theme.md) | 主题系统：`theme` / `density` / `appearance`、token 三层架构、Tailwind 映射、视觉规范、样式隔离 |
 | [theme-tokens.md](theme-tokens.md) | 全部 token 清单（由 `scripts/generate-theme.mjs` 自动生成，不要手改） |

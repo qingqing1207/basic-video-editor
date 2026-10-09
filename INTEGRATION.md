@@ -370,6 +370,23 @@ import "@basic-video-editor/editor/style.css";
 
 全部属性、事件、生命周期规则、存储接口、字体和转录提供方见 [docs/api.md](docs/api.md)。需要自己管理编辑器实例时用 `createEditor` + `<VideoEditor>`，同样在 api.md。
 
+### 只用视频裁剪组件
+
+只想让用户从上传的视频里截取一段，不需要编辑器、项目和 WASM：
+
+```tsx
+"use client";
+import { useRef } from "react";
+import { VideoTrimmer, type VideoTrimmerHandle } from "@basic-video-editor/editor";
+import "@basic-video-editor/editor/style.css";
+
+const trimmer = useRef<VideoTrimmerHandle>(null);
+<VideoTrimmer ref={trimmer} file={file} />;
+// 自己的按钮里：const { file: trimmed } = await trimmer.current.trim();
+```
+
+属性、事件、`ref` 方法和输出文件见 [docs/trimmer.md](docs/trimmer.md)。编辑器本身导入视频时的剪辑弹窗默认开启（`trimOnImport`）。
+
 ## 5. 主题定制
 
 `theme`、`density`、`appearance` 三个入参，改了即时生效，不会重建编辑器，也不写进工程文件：

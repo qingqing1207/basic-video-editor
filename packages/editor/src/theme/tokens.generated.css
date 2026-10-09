@@ -73,6 +73,7 @@
   --bve-caution: var(--bve-ref-amber-700);
   --bve-caution-foreground: var(--bve-ref-white);
   --bve-on-media: var(--bve-ref-white);
+  --bve-media-backdrop: var(--bve-ref-black);
   --bve-scrim: color-mix(in srgb, var(--bve-ref-black) 60%, transparent);
   --bve-scrim-subtle: color-mix(in srgb, var(--bve-ref-black) 35%, transparent);
   --bve-font-ui: "Inter", Arial, sans-serif;

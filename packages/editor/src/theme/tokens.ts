@@ -217,6 +217,7 @@ export const editorTokenDefinitions = {
 
   ...section("media", {
     "on-media": color(ref("white")),
+    "media-backdrop": color(ref("black")),
     scrim: color(mix(ref("black"), 60)),
     "scrim-subtle": color(mix(ref("black"), 35)),
   }),

@@ -15,6 +15,7 @@
 | 把编辑器放进我的项目 | [INTEGRATION.md](INTEGRATION.md) |
 | 查属性、事件、生命周期、存储、字体、转录 | [docs/api.md](docs/api.md) |
 | 做项目列表、新建、复制、删除 | [docs/project-management.md](docs/project-management.md) |
+| 让用户从上传的视频里截取一段 | [docs/trimmer.md](docs/trimmer.md) |
 | 定制外观、改主题 token | [docs/theme.md](docs/theme.md) |
 | 了解验收状态和已知限制 | [docs/status.md](docs/status.md) |
 | 全部文档 | [docs/README.md](docs/README.md) |

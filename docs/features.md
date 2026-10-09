@@ -48,6 +48,11 @@ Freeze frame（定格）占位入口已完整删除。该版本只有工具栏�
 
 支持手动新增视频／图片、文字、音频空轨道（左上角 Add track 把新轨道追加到列表末尾，任何类型都一样），整轨删除，上下交换相邻轨道及右键在上方／下方插入。主动新增且未参与移动的空轨道保留，移动产生的源空轨道在同次提交清理；显示顺序随工程保存，预览与导出使用相同层级。轨道操作接入原命令历史。详见 [opencut-changes/features.md](opencut-changes/features.md)。
 
+## 新增视频裁剪
+
+- **独立组件 `VideoTrimmer`**：用户上传视频后，在缩略图条上拖动两端手柄选出片段，在浏览器里裁出新文件；组件只负责选区和裁剪，按钮、读数、进度由宿主渲染，也可以只用 `trimVideo()` 函数。说明见 [trimmer.md](trimmer.md)。
+- **导入时剪辑**：编辑器导入含视频的文件时先弹出剪辑弹窗，支持多个视频切换、Reset 和一次性确认全部，`trimOnImport={false}` 可关闭。详见 [opencut-changes/features.md](opencut-changes/features.md)。
+
 ## 相对原版的改动台账
 
 见 [OpenCut 改动索引](opencut-changes/README.md)，包含对话决策溯源、原版与当前行为、源码、验证和未实施方案。
