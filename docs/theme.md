@@ -98,7 +98,7 @@ Tailwind 默认的颜色、圆角、阴影刻度被重置（`--color-*: initial`
 ## 字体与样式隔离
 
 - `font-ui` / `font-mono` 控制界面字体，`text-2xs` … `text-xl` 控制字号；它们不修改工程里的文字字体。非系统 UI 字体需要宿主先通过本地 `@font-face` 等方式提供，设置一个字体名称本身不会下载字体。
-- 生成的 CSS 全部限定在 `.bve-scope`：公开变量是 `--bve-*`，Tailwind 内部变量是 `--bve-tw-*` / `--bve-internal-*`，keyframes 带 `bve-` 前缀；`@layer` 在构建时展开为普通规则，宿主没放进任何层的全局 CSS（如 `button { … }`）因此不会压过编辑器的样式。不修改宿主的 `:root`、`body`、全局元素或全局 Tailwind 变量。
+- 生成的 CSS 全部限定在 `.bve-scope`：公开变量是 `--bve-*`，Tailwind 内部变量是 `--bve-tw-*` / `--bve-internal-*`，keyframes 带 `bve-` 前缀；`@layer` 在构建时展开为普通规则（按 `theme, base, components, utilities` 的顺序合并，保证同等优先级下工具类仍然压过组件规则；由 `tests/css-namespace.test.ts` 保护），宿主没放进任何层的全局 CSS（如 `button { … }`）因此不会压过编辑器的样式。不修改宿主的 `:root`、`body`、全局元素或全局 Tailwind 变量。
 - 防不住：宿主的 `!important`，以及直接针对 `.bve-scope` 内部类名的覆盖。
 - 容器需要明确高度；目前只支持桌面布局。
 

@@ -43,7 +43,7 @@ export function AddTrackButton() {
           Add track
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="start" className="w-56" finalFocus>
+      <DropdownMenuContent align="start" className="w-max" finalFocus>
         <DropdownMenuItem
           icon={<Video />}
           onClick={() => editor.timeline.addTrack({ type: "video" })}

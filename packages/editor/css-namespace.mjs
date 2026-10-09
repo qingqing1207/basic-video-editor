@@ -2,12 +2,35 @@ const namespace = () => ({
   postcssPlugin: "editor-css-namespace",
   OnceExit(root) {
     // Host CSS outside any @layer always outranks layered CSS regardless of specificity, so a global
-    // `button { ... }` in the host would restyle the editor. Flatten the layers: Tailwind already emits
-    // them in cascade order and every selector is scoped under .bve-scope, so specificity decides.
-    root.walkAtRules("layer", (rule) => {
-      if (rule.nodes?.length) rule.replaceWith(rule.nodes);
-      else rule.remove();
-    });
+    // `button { ... }` in the host would restyle the editor. Flatten the layers: every selector is scoped
+    // under .bve-scope, so specificity decides. Layer order still has to hold between rules of equal
+    // specificity (utilities must beat component rules), and a layer can appear in several blocks, so the
+    // blocks are merged and emitted in the declared order (`@layer theme, base, components, utilities`).
+    // Unlayered rules stay after all layered ones, as they did in the cascade.
+    const order = [];
+    const buckets = new Map();
+    const note = (name) => {
+      if (!buckets.has(name)) {
+        buckets.set(name, []);
+        order.push(name);
+      }
+    };
+    for (const node of [...root.nodes]) {
+      if (node.type !== "atrule" || node.name !== "layer") continue;
+      const names = node.params.split(",").map((name) => name.trim()).filter(Boolean);
+      if (!node.nodes) {
+        names.forEach(note);
+      } else {
+        const name = names[0] ?? "";
+        note(name);
+        buckets.get(name).push(...node.nodes);
+      }
+      node.remove();
+    }
+    const layered = order.flatMap((name) => buckets.get(name));
+    const unlayered = [...root.nodes];
+    root.removeAll();
+    root.append(...layered, ...unlayered);
     const animations = new Map();
     root.walkAtRules("keyframes", (rule) => {
       const name = rule.params;
