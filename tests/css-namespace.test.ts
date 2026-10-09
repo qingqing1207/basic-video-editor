@@ -26,8 +26,10 @@ describe("css namespace plugin: @layer flattening", () => {
     expect(selectors(out)).toEqual([".theme", ".base", ".bve-menu-item", ".bve-control", ".pl-8"]);
   });
 
-  it("keeps unlayered rules after all layered rules, as the cascade ranks them", async () => {
+  it("orders undeclared layers by first appearance and keeps unlayered rules after all layered ones", async () => {
+    // Without a `@layer a, b;` statement the first block seen is the lowest layer; unlayered CSS beats every layer.
     const out = await run("@layer utilities{.u{color:red}} .unlayered{color:blue} @layer base{.b{color:green}}");
-    expect(selectors(out)).toEqual([".b", ".u", ".unlayered"]);
+    expect(selectors(out)).toEqual([".u", ".b", ".unlayered"]);
   });
+});
 });
