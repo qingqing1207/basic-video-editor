@@ -20,7 +20,7 @@ const appearance: EditorAppearance = {
   light: {
     primary: "#d9480f",
     "primary-foreground": "#fff",
-    canvas: "#f3f1f6",                     // 页面画布；默认与 panel 同色
+    canvas: "#f3f1f6",                     // 页面画布（面板之间的底色）
     panel: "#fff",
   },
   dark: {
@@ -57,8 +57,9 @@ Token 分三层，只允许向下引用（cmp → sys → ref）：
 
 ### 关键语义
 
-- **表面分层**：`canvas`（编辑器画布，面板之间的底色）→ `panel`（面板、卡片）→ `background`（面板内的控件底，如 outline 按钮、复选框）→ `input`（输入框）→ `popover`（浮层）。默认 `canvas` 与 `panel` 同色，页面和面板连成一体，只靠 1px 细线分区；想要「卡片浮在灰底上」，把 `canvas` 单独设成比 `panel` 更灰或更深的颜色。
-- **品牌色 `primary`**：全站唯一的品牌/操作色，`primary-foreground` 与其配对。Button 的 `default` 与 `primary` 变体相同（品牌色），`neutral` 是强对比的黑/白按钮，`outline` 为次操作，`ghost` 为工具操作，`destructive` 为危险操作。`accent` 表示中性的悬停底色，不是品牌色。`secondary`、选中背景、焦点环由 `primary` 派生，也可独立覆盖。
+- **表面分层**：`canvas`（编辑器画布，面板之间的底色）→ `panel`（面板、卡片）→ `background`（面板内的控件底，如 outline 按钮、复选框）→ `input`（输入框）→ `popover`（浮层）。默认浅色是纯白页面和纯白面板，面板靠细边框加 `shadow-panel` 阴影从页面浮起，不用灰色填充，也不用彩色；深色是页面最深（`#09090b`）、面板稍亮（`#141416`）、控件再亮一档。想要灰白分层，把浅色 `panel` 设成浅灰即可（主题验收页的「同色面板」「旧版」预设可对比）。
+- **品牌色 `primary`**：全站唯一的品牌/操作色，`primary-foreground` 与其配对。Button 的 `default` 与 `primary` 变体相同，用的是 `solid` 系列 token（见下），`neutral` 是强对比的黑/白按钮，`outline` 为次操作，`ghost` 为工具操作，`destructive` 为危险操作。`accent` 表示中性的悬停底色，不是品牌色。`secondary`、选中背景、焦点环由 `primary` 派生，也可独立覆盖。
+- **实心按钮 `solid`**（`solid-foreground`、`solid-hover`、`solid-pressed`）：只给大块实心按钮用。浅色下跟随 `primary`（近黑）；深色下默认是稳定的深灰（`#3f3f46`），而不是刺眼的白色块。复选框、开关、滑块、选中文字等小控件仍用对比度高的 `primary`（深色下近白）。宿主要给深色按钮换品牌色时，需要在 `dark` 里单独覆盖 `solid`，只覆盖 `primary` 不会改变深色下的实心按钮。
 - **编辑提示色 `cue`** 独立于品牌色：播放头、吸附线、插入线、片段选中框、选框填充（`cue-fill`）、预览辅助线/选框/手柄、关键帧选中都读取它。宿主只换 `primary` 不会改变这些线；需要时单独覆盖 `cue`。测试会阻止这些 token 再引用 `primary`。
 - **默认配色**：黑白灰，`primary` 浅色为近黑、深色为近白（深色下主按钮是白底黑字）；轨道保持彩色（紫 = 音频、青绿 = 文字）；只有 `cue` 是蓝色（浅色 `#0d99ff`，深色 `#4db3ff`）。主按钮、音频/文字轨标签等文字与背景的对比度由测试保证不低于 4.5:1；宿主自定义配色需要自己提供合适的前景色，不代表任意覆盖都自动满足对比度。
 
@@ -71,7 +72,7 @@ Tailwind 默认的颜色、圆角、阴影刻度被重置（`--color-*: initial`
 | 颜色 | `bg-` / `text-` / `border-<token>`，如 `bg-panel`、`text-muted-foreground`、`bg-scrim`、`text-on-media`、`bg-track-label-background` |
 | 圆角 | `rounded-sm` `rounded-control` `rounded-panel` `rounded-overlay` |
 | 阴影 | `shadow-raised` `shadow-overlay` `shadow-dialog` `shadow-drag` |
-| 字号 | `text-2xs` `text-xs` `text-sm` `text-base` `text-lg` `text-xl`（带统一行高） |
+| 字号 | `text-2xs`(11px) `text-xs`(12px) `text-sm`(13px) `text-base`(14px) `text-lg`(16px) `text-xl`（带统一行高） |
 | 层级 | `z-raised` `z-sticky` `z-overlay` `z-toast` `z-drag` |
 | 字体 | `font-sans`（= `font-ui`）、`font-mono` |
 
@@ -119,7 +120,7 @@ Tailwind 默认的颜色、圆角、阴影刻度被重置（`--color-*: initial`
 启动示例后访问 `http://127.0.0.1:5202/theme`（`pnpm dev`）：
 
 - 「Token 清单」按 ref/sys/cmp 分层列出全部 token 及当前解析值；「组件样例」展示按钮、表单、浮层和时间线颜色；「真实编辑器」打开一个演示工程的完整编辑器。
-- 可切换预设（极简 / 旧版，定义在 `examples/shared/theme-presets.ts`）、明暗、density、外部 portal 容器和宿主 dialog。想试新风格时先在这里写成 `appearance` 预设对比，满意后再把值写回 `tokens.ts` 的默认值。
+- 可切换预设（极简 / 同色面板（上一版）/ 旧版，定义在 `examples/shared/theme-presets.ts`）、明暗、density、外部 portal 容器和宿主 dialog。想试新风格时先在这里写成 `appearance` 预设对比，满意后再把值写回 `tokens.ts` 的默认值。
 - 展示组件位于独立的可选入口 `@basic-video-editor/editor/theme-preview`，不创建编辑器实例、不读写工程；普通编辑器入口不会加载它。
 
 变更与迁移记录见 [opencut-changes/theme-system.md](opencut-changes/theme-system.md)。

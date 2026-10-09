@@ -26,8 +26,10 @@
   --color-backdrop: var(--bve-backdrop);
   --color-primary: var(--bve-primary);
   --color-primary-foreground: var(--bve-primary-foreground);
-  --color-primary-hover: var(--bve-primary-hover);
-  --color-primary-pressed: var(--bve-primary-pressed);
+  --color-solid: var(--bve-solid);
+  --color-solid-foreground: var(--bve-solid-foreground);
+  --color-solid-hover: var(--bve-solid-hover);
+  --color-solid-pressed: var(--bve-solid-pressed);
   --color-secondary: var(--bve-secondary);
   --color-secondary-border: var(--bve-secondary-border);
   --color-secondary-foreground: var(--bve-secondary-foreground);
@@ -62,6 +64,7 @@
   --radius-control: var(--bve-radius-control);
   --radius-panel: var(--bve-radius-panel);
   --radius-overlay: var(--bve-radius-overlay);
+  --shadow-panel: var(--bve-shadow-panel);
   --shadow-raised: var(--bve-shadow-raised);
   --shadow-overlay: var(--bve-shadow-overlay);
   --shadow-dialog: var(--bve-shadow-dialog);

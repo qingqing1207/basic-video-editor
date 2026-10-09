@@ -102,6 +102,16 @@
 - 圆角 4 / 6 / 10 / 10px，字号 xs 11、sm 13、base 14、lg 16px，面板间距与外边距为 `layout-gap` / `layout-inset`（各 6px）。
 - 默认调色板为黑白灰，轨道保持彩色，`cue` 为蓝色；新增 `ref-*`、`canvas`、`input-border`、`selected-hover-background`、`cue`、`cue-fill`、`layout-gap`、`layout-inset`、`on-media`、`scrim`、`scrim-subtle`、`text-2xs`、`menu-item-padding-y`、`shadow-raised`、`shadow-drag`、`z-*` 等 token。
 
+### 层次与按钮调整（2026-10-09）
+
+用户反馈：浅色下页面和面板同色（整块白）不好看，不如原版 OpenCut 的灰白区别；深色下主按钮从黑变白太突兀；整体需要再看一遍。
+
+- 浅色层次不靠灰填充（试过浅灰面板，观感不佳）：页面和面板都是白色，面板用边框加新增的 `shadow-panel` 阴影浮起，面板间距 6px→8px。深色：页面 `#09090b` 最深、面板 `#141416`、输入框和浮层 `#1f1f23`、悬停 `#27272a`。原来「同色面板」保留为主题验收页的预设，便于对比。
+- 新增 `solid` 系列 token（`solid`、`solid-foreground`、`solid-hover`、`solid-pressed`），取代 `primary-hover` / `primary-pressed`，专给大块实心按钮：浅色跟随 `primary`，深色默认深灰。原因是 `primary` 在深色下同时被小控件当作高对比强调色，不能变灰；测试保证按钮四个状态文字对比度不低于 4.5:1。
+- 面板标题栏、导出弹层、书签颜色选择器不再用 `bg-background`（深色下比面板更深，形成一条深带），改用面板或 `popover`。
+- `text-2xs` 10→11px，`text-xs` 11→12px。
+- 导出弹层的 Format / Quality / Audio 行右侧显示当前值；面板之间的拖拽把手在悬停和拖动时显示高亮线。
+
 ### 方案对比
 
 主题验收页保留「极简」（当前默认）和「旧版」（改版前样式，仅用于对比）。设计过程中还评估过暖色、紫色宿主品牌等方案，已按要求删除。

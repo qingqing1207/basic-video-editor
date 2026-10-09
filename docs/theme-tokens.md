@@ -7,7 +7,7 @@
 - “Tailwind”列是该 token 对应的工具类；没有对应工具类的 token 只能通过 `var(--bve-*)` 使用。
 - 三层关系：`ref`（原始色板）→ `sys`（语义角色）→ `cmp`（组件 token）。组件代码只允许使用 sys / cmp。
 
-共 139 个 token。
+共 142 个 token。
 
 ## Ref · 原始色板（31）
 
@@ -34,7 +34,7 @@
 | `--bve-ref-neutral-750` | color | `#27272a` | 同浅色 | — | — |
 | `--bve-ref-neutral-800` | color | `#1f1f23` | 同浅色 | — | — |
 | `--bve-ref-neutral-850` | color | `#18181b` | 同浅色 | — | — |
-| `--bve-ref-neutral-900` | color | `#111113` | 同浅色 | — | — |
+| `--bve-ref-neutral-900` | color | `#141416` | 同浅色 | — | — |
 | `--bve-ref-neutral-950` | color | `#09090b` | 同浅色 | — | — |
 | `--bve-ref-blue-400` | color | `#4db3ff` | 同浅色 | — | — |
 | `--bve-ref-blue-600` | color | `#0d99ff` | 同浅色 | — | — |
@@ -51,7 +51,7 @@
 | `--bve-ref-teal-600` | color | `#337d69` | 同浅色 | — | — |
 | `--bve-ref-orange-400` | color | `#ff9a42` | 同浅色 | — | — |
 
-## Sys · 语义角色（86）
+## Sys · 语义角色（89）
 
 表面、操作、状态、字体、形状、尺寸、层级。宿主定制主题时覆盖这一层。
 
@@ -61,23 +61,23 @@
 
 | 变量 | 类型 | 浅色默认 | 深色默认 | comfortable | Tailwind |
 | --- | --- | --- | --- | --- | --- |
-| `--bve-canvas` | color | `var(--bve-panel)` | 同浅色 | — | `bg-/text-/border-canvas` |
+| `--bve-canvas` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-950)` | — | `bg-/text-/border-canvas` |
 | `--bve-background` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-950)` | — | `bg-/text-/border-background` |
 | `--bve-panel` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-900)` | — | `bg-/text-/border-panel` |
 | `--bve-foreground` | color | `var(--bve-ref-neutral-850)` | `var(--bve-ref-neutral-100)` | — | `bg-/text-/border-foreground` |
 | `--bve-muted-foreground` | color | `var(--bve-ref-neutral-600)` | `var(--bve-ref-neutral-450)` | — | `bg-/text-/border-muted-foreground` |
 | `--bve-disabled-foreground` | color | `var(--bve-ref-neutral-450)` | `var(--bve-ref-neutral-600)` | — | `bg-/text-/border-disabled-foreground` |
 | `--bve-muted` | color | `var(--bve-ref-neutral-300)` | `var(--bve-ref-neutral-750)` | — | `bg-/text-/border-muted` |
-| `--bve-accent` | color | `var(--bve-ref-neutral-150)` | `var(--bve-ref-neutral-800)` | — | `bg-/text-/border-accent` |
+| `--bve-accent` | color | `var(--bve-ref-neutral-150)` | `var(--bve-ref-neutral-750)` | — | `bg-/text-/border-accent` |
 | `--bve-accent-foreground` | color | `var(--bve-foreground)` | 同浅色 | — | `bg-/text-/border-accent-foreground` |
 | `--bve-pressed-background` | color | `var(--bve-ref-neutral-200)` | `var(--bve-ref-neutral-750)` | — | `bg-/text-/border-pressed-background` |
 | `--bve-border` | color | `var(--bve-ref-neutral-200)` | `var(--bve-ref-neutral-750)` | — | `bg-/text-/border-border` |
 | `--bve-border-strong` | color | `var(--bve-ref-neutral-400)` | `var(--bve-ref-neutral-700)` | — | `bg-/text-/border-border-strong` |
-| `--bve-input` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-850)` | — | `bg-/text-/border-input` |
+| `--bve-input` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-800)` | — | `bg-/text-/border-input` |
 | `--bve-input-border` | color | `var(--bve-ref-neutral-300)` | `var(--bve-ref-neutral-700)` | — | `bg-/text-/border-input-border` |
 | `--bve-card` | color | `var(--bve-panel)` | 同浅色 | — | `bg-/text-/border-card` |
 | `--bve-card-foreground` | color | `var(--bve-foreground)` | 同浅色 | — | `bg-/text-/border-card-foreground` |
-| `--bve-popover` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-850)` | — | `bg-/text-/border-popover` |
+| `--bve-popover` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-800)` | — | `bg-/text-/border-popover` |
 | `--bve-popover-hover` | color | `var(--bve-accent)` | 同浅色 | — | `bg-/text-/border-popover-hover` |
 | `--bve-popover-foreground` | color | `var(--bve-foreground)` | 同浅色 | — | `bg-/text-/border-popover-foreground` |
 | `--bve-backdrop` | color | `color-mix(in srgb, var(--bve-ref-black) 28%, transparent)` | `color-mix(in srgb, var(--bve-ref-black) 56%, transparent)` | — | `bg-/text-/border-backdrop` |
@@ -90,8 +90,10 @@
 | --- | --- | --- | --- | --- | --- |
 | `--bve-primary` | color | `var(--bve-ref-neutral-850)` | `var(--bve-ref-neutral-100)` | — | `bg-/text-/border-primary` |
 | `--bve-primary-foreground` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-850)` | — | `bg-/text-/border-primary-foreground` |
-| `--bve-primary-hover` | color | `color-mix(in srgb, var(--bve-primary) 82%, var(--bve-ref-white))` | `color-mix(in srgb, var(--bve-primary) 88%, var(--bve-ref-black))` | — | `bg-/text-/border-primary-hover` |
-| `--bve-primary-pressed` | color | `color-mix(in srgb, var(--bve-primary) 68%, var(--bve-ref-white))` | `color-mix(in srgb, var(--bve-primary) 76%, var(--bve-ref-black))` | — | `bg-/text-/border-primary-pressed` |
+| `--bve-solid` | color | `var(--bve-primary)` | `var(--bve-ref-neutral-700)` | — | `bg-/text-/border-solid` |
+| `--bve-solid-foreground` | color | `var(--bve-primary-foreground)` | `var(--bve-ref-neutral-50)` | — | `bg-/text-/border-solid-foreground` |
+| `--bve-solid-hover` | color | `color-mix(in srgb, var(--bve-solid) 82%, var(--bve-ref-white))` | `color-mix(in srgb, var(--bve-solid) 85%, var(--bve-ref-white))` | — | `bg-/text-/border-solid-hover` |
+| `--bve-solid-pressed` | color | `color-mix(in srgb, var(--bve-solid) 68%, var(--bve-ref-white))` | `color-mix(in srgb, var(--bve-solid) 76%, var(--bve-ref-black))` | — | `bg-/text-/border-solid-pressed` |
 | `--bve-secondary` | color | `color-mix(in srgb, var(--bve-primary) 10%, var(--bve-panel))` | 同浅色 | — | `bg-/text-/border-secondary` |
 | `--bve-secondary-border` | color | `transparent` | 同浅色 | — | `bg-/text-/border-secondary-border` |
 | `--bve-secondary-foreground` | color | `var(--bve-primary)` | 同浅色 | — | `bg-/text-/border-secondary-foreground` |
@@ -141,8 +143,8 @@
 | `--bve-font-ui` | font | `"Inter", Arial, sans-serif` | 同浅色 | — | `font-sans` |
 | `--bve-font-mono` | font | `ui-monospace, SFMono-Regular, Menlo, monospace` | 同浅色 | — | `font-mono` |
 | `--bve-font-size` | length | `14px` | 同浅色 | — | — |
-| `--bve-text-2xs` | length | `10px` | 同浅色 | — | `text-2xs` |
-| `--bve-text-xs` | length | `11px` | 同浅色 | — | `text-xs` |
+| `--bve-text-2xs` | length | `11px` | 同浅色 | — | `text-2xs` |
+| `--bve-text-xs` | length | `12px` | 同浅色 | — | `text-xs` |
 | `--bve-text-sm` | length | `13px` | 同浅色 | — | `text-sm` |
 | `--bve-text-base` | length | `14px` | 同浅色 | — | `text-base` |
 | `--bve-text-lg` | length | `16px` | 同浅色 | — | `text-lg` |
@@ -180,8 +182,8 @@
 | `--bve-panel-padding` | length | `12px` | 同浅色 | `16px` | — |
 | `--bve-dialog-padding` | length | `24px` | 同浅色 | `28px` | — |
 | `--bve-field-gap` | length | `8px` | 同浅色 | `12px` | — |
-| `--bve-layout-gap` | length | `6px` | 同浅色 | — | — |
-| `--bve-layout-inset` | length | `6px` | 同浅色 | — | — |
+| `--bve-layout-gap` | length | `8px` | 同浅色 | — | — |
+| `--bve-layout-inset` | length | `8px` | 同浅色 | — | — |
 | `--bve-section-gap` | length | `16px` | 同浅色 | `20px` | — |
 | `--bve-icon-size` | length | `16px` | 同浅色 | — | — |
 
@@ -191,6 +193,7 @@
 
 | 变量 | 类型 | 浅色默认 | 深色默认 | comfortable | Tailwind |
 | --- | --- | --- | --- | --- | --- |
+| `--bve-shadow-panel` | shadow | `0 1px 2px rgb(0 0 0 / 6%), 0 8px 24px rgb(0 0 0 / 8%)` | `0 8px 24px rgb(0 0 0 / 50%)` | — | `shadow-panel` |
 | `--bve-shadow-raised` | shadow | `0 1px 3px rgb(0 0 0 / 14%)` | `0 1px 3px rgb(0 0 0 / 45%)` | — | `shadow-raised` |
 | `--bve-shadow-overlay` | shadow | `0 4px 16px rgb(0 0 0 / 12%)` | `0 4px 20px rgb(0 0 0 / 40%)` | — | `shadow-overlay` |
 | `--bve-shadow-dialog` | shadow | `0 12px 36px rgb(0 0 0 / 18%)` | `0 12px 36px rgb(0 0 0 / 50%)` | — | `shadow-dialog` |

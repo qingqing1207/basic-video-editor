@@ -3,10 +3,21 @@
   .panel {
     background: var(--bve-panel);
     border-radius: var(--bve-radius-panel);
+    box-shadow: var(--bve-shadow-panel);
   }
   /* Spacing between top-level editor panels; the 1px resize handle sits inside the gap. */
   .bve-layout-gap {
     gap: calc(var(--bve-layout-gap) - 1px);
+  }
+  /* Resize handles are invisible by default; show them on hover and while dragging. */
+  [data-panel-resize-handle-id][data-resize-handle-state="hover"],
+  [data-panel-resize-handle-id][data-resize-handle-state="drag"] {
+    background: var(--bve-border-strong);
+    box-shadow: 0 0 0 1px var(--bve-border-strong);
+  }
+  [data-panel-resize-handle-id][data-resize-handle-state="drag"] {
+    background: var(--bve-ring);
+    box-shadow: 0 0 0 1px var(--bve-ring);
   }
   .bve-layout-inset-x {
     padding-inline: var(--bve-layout-inset);
@@ -66,14 +77,14 @@
     background: var(--bve-pressed-background);
   }
   .bve-button-primary {
-    background: var(--bve-primary);
-    color: var(--bve-primary-foreground);
+    background: var(--bve-solid);
+    color: var(--bve-solid-foreground);
   }
   .bve-button-primary:hover {
-    background: var(--bve-primary-hover);
+    background: var(--bve-solid-hover);
   }
   .bve-button-primary:active:not(:disabled) {
-    background: var(--bve-primary-pressed);
+    background: var(--bve-solid-pressed);
   }
   .bve-field {
     border: var(--bve-border-width) solid var(--bve-input-border);

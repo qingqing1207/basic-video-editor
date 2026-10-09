@@ -22,9 +22,26 @@ function resolve(
 ): string {
   const raw = editorTokenDefinitions[name][mode];
   const alias = raw.match(/^var\(--bve-([\w-]+)\)$/);
-  return alias
-    ? resolve(alias[1] as keyof typeof editorTokenDefinitions, mode)
-    : raw;
+  if (alias)
+    return resolve(alias[1] as keyof typeof editorTokenDefinitions, mode);
+  // color-mix(in srgb, <a> N%, <b>) with both operands as token references.
+  const mix = raw.match(
+    /^color-mix\(in srgb, var\(--bve-([\w-]+)\) (\d+)%, var\(--bve-([\w-]+)\)\)$/,
+  );
+  if (mix) {
+    const first = resolve(mix[1] as keyof typeof editorTokenDefinitions, mode);
+    const second = resolve(mix[3] as keyof typeof editorTokenDefinitions, mode);
+    const share = Number(mix[2]) / 100;
+    const channel = (i: number) =>
+      Math.round(
+        parseInt(first.slice(i, i + 2), 16) * share +
+          parseInt(second.slice(i, i + 2), 16) * (1 - share),
+      )
+        .toString(16)
+        .padStart(2, "0");
+    return `#${channel(1)}${channel(3)}${channel(5)}`;
+  }
+  return raw;
 }
 function contrast(a: string, b: string) {
   const values = [luminance(a), luminance(b)].sort((x, y) => x - y);
@@ -73,6 +90,11 @@ describe("public theme contracts", () => {
       expect(
         contrast(resolve("primary", mode), resolve("primary-foreground", mode)),
       ).toBeGreaterThanOrEqual(4.5);
+      for (const state of ["solid", "solid-hover", "solid-pressed"] as const)
+        expect(
+          contrast(resolve(state, mode), resolve("solid-foreground", mode)),
+          `${state} (${mode})`,
+        ).toBeGreaterThanOrEqual(4.5);
       for (const token of [
         "track-audio-background",
         "track-text-background",

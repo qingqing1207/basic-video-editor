@@ -366,7 +366,7 @@ function BookmarkPopoverContent({
             onChangeEnd={(color) =>
               handleUpdate({ color: `#${uppercase({ string: color })}` })
             }
-            className="bg-background border"
+            className="bg-popover border"
           />
           {bookmark.color &&
             bookmark.color.replace(/^#/, "").toUpperCase() !==

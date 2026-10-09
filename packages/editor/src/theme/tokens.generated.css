@@ -15,7 +15,7 @@
   --bve-ref-neutral-750: #27272a;
   --bve-ref-neutral-800: #1f1f23;
   --bve-ref-neutral-850: #18181b;
-  --bve-ref-neutral-900: #111113;
+  --bve-ref-neutral-900: #141416;
   --bve-ref-neutral-950: #09090b;
   --bve-ref-blue-400: #4db3ff;
   --bve-ref-blue-600: #0d99ff;
@@ -31,7 +31,7 @@
   --bve-ref-purple-600: #79519e;
   --bve-ref-teal-600: #337d69;
   --bve-ref-orange-400: #ff9a42;
-  --bve-canvas: var(--bve-panel);
+  --bve-canvas: var(--bve-ref-white);
   --bve-background: var(--bve-ref-white);
   --bve-panel: var(--bve-ref-white);
   --bve-foreground: var(--bve-ref-neutral-850);
@@ -53,8 +53,10 @@
   --bve-backdrop: color-mix(in srgb, var(--bve-ref-black) 28%, transparent);
   --bve-primary: var(--bve-ref-neutral-850);
   --bve-primary-foreground: var(--bve-ref-white);
-  --bve-primary-hover: color-mix(in srgb, var(--bve-primary) 82%, var(--bve-ref-white));
-  --bve-primary-pressed: color-mix(in srgb, var(--bve-primary) 68%, var(--bve-ref-white));
+  --bve-solid: var(--bve-primary);
+  --bve-solid-foreground: var(--bve-primary-foreground);
+  --bve-solid-hover: color-mix(in srgb, var(--bve-solid) 82%, var(--bve-ref-white));
+  --bve-solid-pressed: color-mix(in srgb, var(--bve-solid) 68%, var(--bve-ref-white));
   --bve-secondary: color-mix(in srgb, var(--bve-primary) 10%, var(--bve-panel));
   --bve-secondary-border: transparent;
   --bve-secondary-foreground: var(--bve-primary);
@@ -76,8 +78,8 @@
   --bve-font-ui: "Inter", Arial, sans-serif;
   --bve-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --bve-font-size: 14px;
-  --bve-text-2xs: 10px;
-  --bve-text-xs: 11px;
+  --bve-text-2xs: 11px;
+  --bve-text-xs: 12px;
   --bve-text-sm: 13px;
   --bve-text-base: 14px;
   --bve-text-lg: 16px;
@@ -101,10 +103,11 @@
   --bve-panel-padding: 12px;
   --bve-dialog-padding: 24px;
   --bve-field-gap: 8px;
-  --bve-layout-gap: 6px;
-  --bve-layout-inset: 6px;
+  --bve-layout-gap: 8px;
+  --bve-layout-inset: 8px;
   --bve-section-gap: 16px;
   --bve-icon-size: 16px;
+  --bve-shadow-panel: 0 1px 2px rgb(0 0 0 / 6%), 0 8px 24px rgb(0 0 0 / 8%);
   --bve-shadow-raised: 0 1px 3px rgb(0 0 0 / 14%);
   --bve-shadow-overlay: 0 4px 16px rgb(0 0 0 / 12%);
   --bve-shadow-dialog: 0 12px 36px rgb(0 0 0 / 18%);
@@ -141,24 +144,27 @@
   --bve-scrollbar-size: 7px;
 }
 .bve-scope.dark {
+  --bve-canvas: var(--bve-ref-neutral-950);
   --bve-background: var(--bve-ref-neutral-950);
   --bve-panel: var(--bve-ref-neutral-900);
   --bve-foreground: var(--bve-ref-neutral-100);
   --bve-muted-foreground: var(--bve-ref-neutral-450);
   --bve-disabled-foreground: var(--bve-ref-neutral-600);
   --bve-muted: var(--bve-ref-neutral-750);
-  --bve-accent: var(--bve-ref-neutral-800);
+  --bve-accent: var(--bve-ref-neutral-750);
   --bve-pressed-background: var(--bve-ref-neutral-750);
   --bve-border: var(--bve-ref-neutral-750);
   --bve-border-strong: var(--bve-ref-neutral-700);
-  --bve-input: var(--bve-ref-neutral-850);
+  --bve-input: var(--bve-ref-neutral-800);
   --bve-input-border: var(--bve-ref-neutral-700);
-  --bve-popover: var(--bve-ref-neutral-850);
+  --bve-popover: var(--bve-ref-neutral-800);
   --bve-backdrop: color-mix(in srgb, var(--bve-ref-black) 56%, transparent);
   --bve-primary: var(--bve-ref-neutral-100);
   --bve-primary-foreground: var(--bve-ref-neutral-850);
-  --bve-primary-hover: color-mix(in srgb, var(--bve-primary) 88%, var(--bve-ref-black));
-  --bve-primary-pressed: color-mix(in srgb, var(--bve-primary) 76%, var(--bve-ref-black));
+  --bve-solid: var(--bve-ref-neutral-700);
+  --bve-solid-foreground: var(--bve-ref-neutral-50);
+  --bve-solid-hover: color-mix(in srgb, var(--bve-solid) 85%, var(--bve-ref-white));
+  --bve-solid-pressed: color-mix(in srgb, var(--bve-solid) 76%, var(--bve-ref-black));
   --bve-cue: var(--bve-ref-blue-400);
   --bve-destructive: var(--bve-ref-red-400);
   --bve-destructive-foreground: var(--bve-ref-red-950);
@@ -166,6 +172,7 @@
   --bve-constructive-foreground: var(--bve-ref-green-950);
   --bve-caution: var(--bve-ref-amber-400);
   --bve-caution-foreground: var(--bve-ref-amber-950);
+  --bve-shadow-panel: 0 8px 24px rgb(0 0 0 / 50%);
   --bve-shadow-raised: 0 1px 3px rgb(0 0 0 / 45%);
   --bve-shadow-overlay: 0 4px 20px rgb(0 0 0 / 40%);
   --bve-shadow-dialog: 0 12px 36px rgb(0 0 0 / 50%);

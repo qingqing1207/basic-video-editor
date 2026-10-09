@@ -19,13 +19,16 @@ const classic: EditorAppearance = {
     "radius-overlay": "13.12px",
     "layout-gap": "3px",
     "layout-inset": "12px",
+    "shadow-panel": "none",
     "text-xs": "11.52px",
     "text-sm": "12.64px",
     "text-base": "14.72px",
     "text-lg": "18px",
     "secondary-border": secondaryBorder,
-    "primary-hover": "color-mix(in srgb, var(--bve-primary) 90%, black)",
-    "primary-pressed": "color-mix(in srgb, var(--bve-primary) 82%, black)",
+    solid: "var(--bve-primary)",
+    "solid-foreground": "var(--bve-primary-foreground)",
+    "solid-hover": "color-mix(in srgb, var(--bve-primary) 90%, black)",
+    "solid-pressed": "color-mix(in srgb, var(--bve-primary) 82%, black)",
   },
   light: {
     canvas: "#ffffff",
@@ -64,11 +67,34 @@ const classic: EditorAppearance = {
   },
 };
 
+/** The previous default: page and panels share one color, separated only by hairlines; the primary button flips black <-> white. */
+const flat: EditorAppearance = {
+  base: { "shadow-panel": "none", "layout-gap": "6px", "layout-inset": "6px" },
+  light: { panel: "#ffffff" },
+  dark: {
+    canvas: "#111113",
+    panel: "#111113",
+    input: "#18181b",
+    popover: "#18181b",
+    accent: "#1f1f23",
+    solid: "#f4f4f5",
+    "solid-foreground": "#18181b",
+    "solid-hover": "color-mix(in srgb, #f4f4f5 88%, black)",
+    "solid-pressed": "color-mix(in srgb, #f4f4f5 76%, black)",
+  },
+};
+
 export const themePresets: ThemePreset[] = [
   {
     id: "default",
     label: "极简",
-    note: "当前默认：黑白灰、主色即前景色、小圆角、紧凑间距；仅编辑提示线为蓝色，轨道保留彩色",
+    note: "当前默认：白色页面 + 白色卡片面板（边框加阴影，无灰填充；深色：页面最深、面板稍亮），主按钮深色下是深灰；仅编辑提示线为蓝色，轨道保留彩色",
+  },
+  {
+    id: "flat",
+    label: "同色面板",
+    note: "上一版：页面和面板同色、只靠细线分区，深色主按钮是白色",
+    appearance: flat,
   },
   {
     id: "classic",

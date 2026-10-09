@@ -29,6 +29,17 @@ import {
 import { useEditor } from "@/editor/use-editor";
 import { DEFAULT_EXPORT_OPTIONS } from "@/export/defaults";
 
+const QUALITY_LABELS: Record<ExportQuality, string> = {
+  low: "Low",
+  medium: "Medium",
+  high: "High",
+  very_high: "Very high",
+};
+
+function CurrentValue({ children }: { children: React.ReactNode }) {
+  return <span className="mr-1 text-xs text-muted-foreground">{children}</span>;
+}
+
 function isExportFormat(value: string): value is ExportFormat {
   return EXPORT_FORMAT_VALUES.some((formatValue) => formatValue === value);
 }
@@ -135,7 +146,7 @@ function ExportPopover({
   };
 
   return (
-    <PopoverContent className="bg-background mr-4 flex w-80 flex-col p-0">
+    <PopoverContent className="bg-popover mr-4 flex w-80 flex-col p-0">
       {exportResult && !exportResult.success ? (
         <ExportError
           error={exportResult.error || "Unknown error occurred"}
@@ -158,7 +169,7 @@ function ExportPopover({
                     defaultOpen={false}
                     showTopBorder={false}
                   >
-                    <SectionHeader>
+                    <SectionHeader trailing={<CurrentValue>{format === "mp4" ? "MP4" : "WebM"}</CurrentValue>}>
                       <SectionTitle>Format</SectionTitle>
                     </SectionHeader>
                     <SectionContent>
@@ -187,7 +198,7 @@ function ExportPopover({
                   </Section>
 
                   <Section collapsible defaultOpen={false}>
-                    <SectionHeader>
+                    <SectionHeader trailing={<CurrentValue>{QUALITY_LABELS[quality]}</CurrentValue>}>
                       <SectionTitle>Quality</SectionTitle>
                     </SectionHeader>
                     <SectionContent>
@@ -222,7 +233,7 @@ function ExportPopover({
                   </Section>
 
                   <Section collapsible defaultOpen={false}>
-                    <SectionHeader>
+                    <SectionHeader trailing={<CurrentValue>{shouldIncludeAudio ? "On" : "Off"}</CurrentValue>}>
                       <SectionTitle>Audio</SectionTitle>
                     </SectionHeader>
                     <SectionContent>
