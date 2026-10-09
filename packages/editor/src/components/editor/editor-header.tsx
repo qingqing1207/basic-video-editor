@@ -58,8 +58,10 @@ function ProjectDropdown() {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="p-1 rounded-sm size-8">
-            <EditorLogo />
+          <Button variant="ghost" size="icon" className="p-1 rounded-sm size-9">
+            <span className="flex">
+              <EditorLogo className="size-7" />
+            </span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="z-overlay w-44">
