@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useEditor } from "@/editor/use-editor";
 import { processMediaAssets } from "@/media/processing";
+import { requestImportTrim } from "@/media/import-trim";
 import { showMediaUploadToast } from "@/media/upload-toast";
 import { buildElementFromMedia } from "@/timeline/element-utils";
 import { AddMediaAssetCommand } from "@/commands/media";
@@ -47,7 +48,7 @@ export function usePasteMedia() {
         return;
       }
 
-      const files = extractMediaFilesFromClipboard({
+      let files = extractMediaFilesFromClipboard({
         clipboardData: event.clipboardData,
       });
       if (files.length === 0) {
@@ -60,6 +61,10 @@ export function usePasteMedia() {
 
       const activeProject = editor.project.getActive();
       if (!activeProject) return;
+
+      const readyFiles = await requestImportTrim({ files });
+      if (!readyFiles || readyFiles.length === 0) return;
+      files = readyFiles;
 
       try {
         await showMediaUploadToast({

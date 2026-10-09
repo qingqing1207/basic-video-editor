@@ -59,6 +59,8 @@ export interface VideoEditorProps {
   topBar?: ReactNode;
   onExport?: (result: { blob: Blob; filename: string }) => void | Promise<void>;
   onExit?: () => void | Promise<void>;
+  /** Importing videos opens a dialog to trim them first. Set to false to import them untouched. Default true. */
+  trimOnImport?: boolean;
   /** Shown while the editor code loads. Defaults to a centered spinner. */
   fallback?: ReactNode;
 }
@@ -108,11 +110,18 @@ export interface VideoTrimmerProps {
   /** Initial selection in seconds. Defaults to the whole video. */
   defaultRange?: { start: number; end: number };
   /** The selection changed: once when the video loads (the initial selection), then while dragging and on keyboard changes. */
-  onRangeChange?: (range: { start: number; end: number }) => void;
+  onRangeChange?: (
+    range: { start: number; end: number },
+    info: { duration: number },
+  ) => void;
   /** Shortest selection in seconds. Defaults to 0.1. */
   minDuration?: number;
   /** Longest selection in seconds. Unrestricted by default. */
   maxDuration?: number;
+  /** Drops the card (background, border, padding), for use inside your own dialog or panel. */
+  bare?: boolean;
+  /** Tallest the video preview may get, in pixels. Default 352. */
+  previewMaxHeight?: number;
   /** Ready to trim, trimming, and progress (0 to 1). Use it to drive your own buttons and progress display. */
   onStatusChange?: (status: VideoTrimmerStatus) => void;
   /** The video could not be read or decoded. The component then renders nothing, so show your own message. */
@@ -138,6 +147,8 @@ export interface VideoTrimmerHandle {
   trim: () => Promise<TrimResult>;
   /** Stops a running trim. */
   cancel: () => void;
+  /** Selects the whole video again (limited by `maxDuration`). */
+  reset: () => void;
   getRange: () => { start: number; end: number } | null;
 }
 export type { TrimResult } from "./trimmer/trim-file";

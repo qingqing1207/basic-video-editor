@@ -10,6 +10,8 @@ import { EditorRuntimeBindings } from "@/components/providers/editor-provider";
 import { EditorNotifications } from "./notifications";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEditor } from "@/editor/use-editor";
+import { ImportTrimDialog } from "@/components/editor/import-trim-dialog";
+import { useImportTrimStore } from "@/media/import-trim";
 export default function VideoEditorView({
   editor,
   theme: controlledTheme,
@@ -18,6 +20,7 @@ export default function VideoEditorView({
   portalContainer,
   appearance,
   density = "compact",
+  trimOnImport = true,
   className,
   style,
   topBar,
@@ -47,6 +50,9 @@ export default function VideoEditorView({
     };
   }, [editor, root]);
   useEffect(() => {
+    useImportTrimStore.setState({ enabled: trimOnImport });
+  }, [trimOnImport]);
+  useEffect(() => {
     if (!portal) return;
     editor.activeRoots.add(portal);
     return () => {
@@ -65,6 +71,8 @@ export default function VideoEditorView({
     <ResolvedThemeContext.Provider value={snapshot}>
       <EditorUIContext.Provider
         value={{
+          appearance,
+          density,
           portalContainer: portal,
           theme: currentTheme,
           setTheme: (next) => {
@@ -103,6 +111,7 @@ export default function VideoEditorView({
           <TooltipProvider delayDuration={300}>
             <EditorNotifications editor={editor}>
               <EditorContent topBar={topBar} />
+              <ImportTrimDialog />
             </EditorNotifications>
           </TooltipProvider>
           {!portalContainer && portalElement}

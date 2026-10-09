@@ -38,3 +38,11 @@
 - 复制与失败：复制媒体后提交工程记录，副本使用独立工程 ID；失败清理已复制媒体、释放 Blob URL；删除／重命名错误反馈给页面。跨仓库批量操作不保证事务回滚。
 - 源码：现在是 `examples/next/app/`（说明见 [project-management.md](../project-management.md)）；原版项目页是 `opencut/apps/web/src/app/projects/page.tsx`（本地只读参照，不随仓库提交）。
 - 验证：见 [项目管理移出编辑器包](./project-management.md)。此前永久删除的最终 UI 点击未执行，底层成功／失败路径有测试；不把确认弹窗验证写成永久删除 UI 全流程通过。
+
+## 5. 导入视频时先剪辑
+
+- **需求**：用户导入视频时，可以先在弹窗里选出真正想要的片段；弹窗有 Reset 恢复整段；一次导入多个视频时可以切换，并一次性确认全部。
+- **原版行为**：选好文件后直接入库，没有任何处理。
+- **当前行为**：含视频的导入先弹出剪辑弹窗，确认后改过的视频裁成新文件再入库，其余原样入库；取消则整批不导入。可用 `trimOnImport={false}` 关闭。
+- **入口**：`media/import-trim.ts`、`components/editor/import-trim-dialog.tsx`；三处导入入口分别在 `components/editor/panels/assets/views/assets.tsx`、`timeline/controllers/drag-drop-controller.ts`、`media/use-paste-media.ts`。裁剪组件见 [trimmer.md](../trimmer.md)。
+- **验证**：浏览器里用 3 个视频加 1 张图片导入，切换、保留选区、Reset、Import all 和 Cancel 都符合预期；`requestImportTrim` 有单元测试。时间线拖入和粘贴两个入口只改了同样的调用，没有逐个手动验证。

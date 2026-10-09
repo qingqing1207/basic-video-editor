@@ -49,7 +49,7 @@ import {
 
 const STRIP_HEIGHT = 56;
 const HANDLE_WIDTH = 14;
-const PREVIEW_MAX_HEIGHT = 352;
+const DEFAULT_PREVIEW_MAX_HEIGHT = 352;
 const KEY_STEP = 0.1;
 const KEY_STEP_LARGE = 1;
 /** A press that moves less than this (px) is a click, not a drag of the selection. */
@@ -71,6 +71,8 @@ export default function VideoTrimmerView({
   file,
   defaultRange,
   onRangeChange,
+  bare = false,
+  previewMaxHeight = DEFAULT_PREVIEW_MAX_HEIGHT,
   minDuration,
   maxDuration,
   onStatusChange,
@@ -108,6 +110,7 @@ export default function VideoTrimmerView({
   const dragRef = useRef<DragState | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const rangeRef = useRef<TrimRange | null>(null);
+  const durationRef = useRef(0);
   const resumeTimer = useRef<number | undefined>(undefined);
   const [stripWidth, setStripWidth] = useState(0);
 
@@ -156,11 +159,12 @@ export default function VideoTrimmerView({
             maxDuration,
           }),
         });
+        durationRef.current = result.duration;
         setInfo(result);
         rangeRef.current = initial;
         setRange(initial);
         setTime(initial.start);
-        onRangeChangeRef.current?.(initial);
+        onRangeChangeRef.current?.(initial, { duration: result.duration });
         requestAnimationFrame(() => {
           if (videoRef.current) videoRef.current.currentTime = initial.start;
         });
@@ -234,7 +238,7 @@ export default function VideoTrimmerView({
   const commitRange = useCallback((next: TrimRange) => {
     rangeRef.current = next;
     setRange(next);
-    onRangeChangeRef.current?.(next);
+    onRangeChangeRef.current?.(next, { duration: durationRef.current });
   }, []);
 
   const seek = useCallback((seconds: number) => {
@@ -468,14 +472,28 @@ export default function VideoTrimmerView({
     }
   }, [file, pause, range]);
 
+  /** Back to the whole video (limited by `maxDuration`), preview at its first frame. */
+  const reset = useCallback(() => {
+    if (!info || busy) return;
+    const full = normalizeRange({
+      range: { start: 0, end: info.duration },
+      duration: info.duration,
+      limits,
+    });
+    pause();
+    commitRange(full);
+    seek(full.start);
+  }, [busy, commitRange, info, limits, pause, seek]);
+
   useImperativeHandle(
     ref,
     () => ({
       trim: run,
       cancel: () => abortRef.current?.abort(),
+      reset,
       getRange: () => range,
     }),
-    [range, run],
+    [range, reset, run],
   );
 
   useEffect(() => () => abortRef.current?.abort(), []);
@@ -508,14 +526,19 @@ export default function VideoTrimmerView({
       className={cn("bve-scope", theme, className)}
       style={{ ...themeStyle, ...style }}
     >
-      <div className="bg-panel text-foreground rounded-panel flex w-full flex-col gap-4 border p-4 select-none">
+      <div
+        className={cn(
+          "text-foreground flex w-full flex-col gap-4 select-none",
+          !bare && "bg-panel rounded-panel border p-4",
+        )}
+      >
         {loadError ? null : (
           <>
             <div
               className="relative mx-auto flex w-full items-center justify-center overflow-hidden rounded-overlay bg-media-backdrop"
               style={{
                 aspectRatio: previewAspect,
-                maxWidth: PREVIEW_MAX_HEIGHT * previewAspect,
+                maxWidth: previewMaxHeight * previewAspect,
               }}
             >
               <video

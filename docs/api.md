@@ -47,6 +47,7 @@
 | `theme` | `"light"` 或 `"dark"`，由宿主控制；或用 `defaultTheme` + `onThemeChange` |
 | `appearance` | 覆盖主题 token，见 [theme.md](theme.md) |
 | `density` | `"compact"`（默认）或 `"comfortable"` |
+| `trimOnImport` | 导入含视频的文件时先弹出剪辑弹窗，默认 `true`。设为 `false` 则原样导入，见 [trimmer.md](trimmer.md#导入时剪辑) |
 | `onExport` | 导出完成回调 `({ blob, filename })`，由宿主决定下载、上传或保存位置 |
 | `onExit` | 点击菜单里的 Exit project 后调用（项目已保存并关闭），宿主在这里切换路由 |
 | `topBar` | 顶部扩展区域 |

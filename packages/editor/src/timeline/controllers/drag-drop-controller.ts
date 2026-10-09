@@ -2,6 +2,7 @@ import { TIMELINE_CONTENT_TOP_PADDING_PX } from "@/timeline/components/layout";
 import { getOrderedTracks } from "@/timeline/track-order";
 import type { DragEvent } from "react";
 import { processMediaAssets } from "@/media/processing";
+import { requestImportTrim } from "@/media/import-trim";
 import { showMediaUploadToast } from "@/media/upload-toast";
 import {
   DEFAULT_NEW_ELEMENT_DURATION,
@@ -405,6 +406,10 @@ export class DragDropController {
   }): Promise<void> {
     const projectId = this.config.getActiveProjectId();
     if (!projectId) return;
+
+    const readyFiles = await requestImportTrim({ files });
+    if (!readyFiles || readyFiles.length === 0) return;
+    files = readyFiles;
 
     await showMediaUploadToast({
       filesCount: files.length,

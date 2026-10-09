@@ -31,6 +31,7 @@ import { useEditor } from "@/editor/use-editor";
 import { useFileUpload } from "@/media/use-file-upload";
 import { invokeAction } from "@/actions";
 import { processMediaAssets } from "@/media/processing";
+import { requestImportTrim } from "@/media/import-trim";
 import { showMediaUploadToast } from "@/media/upload-toast";
 import {
   SelectableItem,
@@ -76,12 +77,14 @@ export function MediaView() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const processFiles = async ({ files }: { files: File[] }) => {
-    if (!files || files.length === 0) return;
+  const processFiles = async ({ files: selectedFiles }: { files: File[] }) => {
+    if (!selectedFiles || selectedFiles.length === 0) return;
     if (!activeProject) {
       toast.error("No active project");
       return;
     }
+    const files = await requestImportTrim({ files: selectedFiles });
+    if (!files || files.length === 0) return;
 
     setIsProcessing(true);
     setProgress(0);
