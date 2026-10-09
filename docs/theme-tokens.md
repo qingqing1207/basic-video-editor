@@ -182,8 +182,8 @@
 | `--bve-panel-padding` | length | `12px` | 同浅色 | `16px` | — |
 | `--bve-dialog-padding` | length | `24px` | 同浅色 | `28px` | — |
 | `--bve-field-gap` | length | `8px` | 同浅色 | `12px` | — |
-| `--bve-layout-gap` | length | `8px` | 同浅色 | — | — |
-| `--bve-layout-inset` | length | `8px` | 同浅色 | — | — |
+| `--bve-layout-gap` | length | `6px` | 同浅色 | — | — |
+| `--bve-layout-inset` | length | `6px` | 同浅色 | — | — |
 | `--bve-section-gap` | length | `16px` | 同浅色 | `20px` | — |
 | `--bve-icon-size` | length | `16px` | 同浅色 | — | — |
 
@@ -193,7 +193,7 @@
 
 | 变量 | 类型 | 浅色默认 | 深色默认 | comfortable | Tailwind |
 | --- | --- | --- | --- | --- | --- |
-| `--bve-shadow-panel` | shadow | `0 1px 2px rgb(0 0 0 / 6%), 0 8px 24px rgb(0 0 0 / 8%)` | `0 8px 24px rgb(0 0 0 / 50%)` | — | `shadow-panel` |
+| `--bve-shadow-panel` | shadow | `none` | 同浅色 | — | `shadow-panel` |
 | `--bve-shadow-raised` | shadow | `0 1px 3px rgb(0 0 0 / 14%)` | `0 1px 3px rgb(0 0 0 / 45%)` | — | `shadow-raised` |
 | `--bve-shadow-overlay` | shadow | `0 4px 16px rgb(0 0 0 / 12%)` | `0 4px 20px rgb(0 0 0 / 40%)` | — | `shadow-overlay` |
 | `--bve-shadow-dialog` | shadow | `0 12px 36px rgb(0 0 0 / 18%)` | `0 12px 36px rgb(0 0 0 / 50%)` | — | `shadow-dialog` |

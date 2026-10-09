@@ -9,16 +9,6 @@
   .bve-layout-gap {
     gap: calc(var(--bve-layout-gap) - 1px);
   }
-  /* Resize handles are invisible by default; show them on hover and while dragging. */
-  [data-panel-resize-handle-id][data-resize-handle-state="hover"],
-  [data-panel-resize-handle-id][data-resize-handle-state="drag"] {
-    background: var(--bve-border-strong);
-    box-shadow: 0 0 0 1px var(--bve-border-strong);
-  }
-  [data-panel-resize-handle-id][data-resize-handle-state="drag"] {
-    background: var(--bve-ring);
-    box-shadow: 0 0 0 1px var(--bve-ring);
-  }
   .bve-layout-inset-x {
     padding-inline: var(--bve-layout-inset);
   }

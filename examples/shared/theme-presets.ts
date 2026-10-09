@@ -19,7 +19,6 @@ const classic: EditorAppearance = {
     "radius-overlay": "13.12px",
     "layout-gap": "3px",
     "layout-inset": "12px",
-    "shadow-panel": "none",
     "text-xs": "11.52px",
     "text-sm": "12.64px",
     "text-base": "14.72px",
@@ -69,7 +68,6 @@ const classic: EditorAppearance = {
 
 /** The previous default: page and panels share one color, separated only by hairlines; the primary button flips black <-> white. */
 const flat: EditorAppearance = {
-  base: { "shadow-panel": "none", "layout-gap": "6px", "layout-inset": "6px" },
   light: { panel: "#ffffff" },
   dark: {
     canvas: "#111113",
@@ -88,7 +86,7 @@ export const themePresets: ThemePreset[] = [
   {
     id: "default",
     label: "极简",
-    note: "当前默认：白色页面 + 白色卡片面板（边框加阴影，无灰填充；深色：页面最深、面板稍亮），主按钮深色下是深灰；仅编辑提示线为蓝色，轨道保留彩色",
+    note: "当前默认：白色页面 + 白色面板（细边框分区，无灰填充；深色：页面最深、面板稍亮），主按钮深色下是深灰；仅编辑提示线为蓝色，轨道保留彩色",
   },
   {
     id: "flat",

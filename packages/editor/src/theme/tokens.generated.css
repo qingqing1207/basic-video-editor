@@ -103,11 +103,11 @@
   --bve-panel-padding: 12px;
   --bve-dialog-padding: 24px;
   --bve-field-gap: 8px;
-  --bve-layout-gap: 8px;
-  --bve-layout-inset: 8px;
+  --bve-layout-gap: 6px;
+  --bve-layout-inset: 6px;
   --bve-section-gap: 16px;
   --bve-icon-size: 16px;
-  --bve-shadow-panel: 0 1px 2px rgb(0 0 0 / 6%), 0 8px 24px rgb(0 0 0 / 8%);
+  --bve-shadow-panel: none;
   --bve-shadow-raised: 0 1px 3px rgb(0 0 0 / 14%);
   --bve-shadow-overlay: 0 4px 16px rgb(0 0 0 / 12%);
   --bve-shadow-dialog: 0 12px 36px rgb(0 0 0 / 18%);
@@ -172,7 +172,6 @@
   --bve-constructive-foreground: var(--bve-ref-green-950);
   --bve-caution: var(--bve-ref-amber-400);
   --bve-caution-foreground: var(--bve-ref-amber-950);
-  --bve-shadow-panel: 0 8px 24px rgb(0 0 0 / 50%);
   --bve-shadow-raised: 0 1px 3px rgb(0 0 0 / 45%);
   --bve-shadow-overlay: 0 4px 20px rgb(0 0 0 / 40%);
   --bve-shadow-dialog: 0 12px 36px rgb(0 0 0 / 50%);

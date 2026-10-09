@@ -259,18 +259,14 @@ export const editorTokenDefinitions = {
     "panel-padding": length("12px", "16px"),
     "dialog-padding": length("24px", "28px"),
     "field-gap": length("8px", "12px"),
-    "layout-gap": length("8px"),
-    "layout-inset": length("8px"),
+    "layout-gap": length("6px"),
+    "layout-inset": length("6px"),
     "section-gap": length("16px", "20px"),
     "icon-size": length("16px"),
   }),
 
   ...section("elevation", {
-    "shadow-panel": value(
-      "shadow",
-      "0 1px 2px rgb(0 0 0 / 6%), 0 8px 24px rgb(0 0 0 / 8%)",
-      "0 8px 24px rgb(0 0 0 / 50%)",
-    ),
+    "shadow-panel": value("shadow", "none"),
     "shadow-raised": value(
       "shadow",
       "0 1px 3px rgb(0 0 0 / 14%)",
