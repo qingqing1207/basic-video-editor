@@ -3,7 +3,7 @@
   .panel {
     background: var(--bve-panel);
     border-radius: var(--bve-radius-panel);
-    box-shadow: var(--bve-shadow-panel);
+    border-color: transparent;
   }
   /* Spacing between top-level editor panels; the 1px resize handle sits inside the gap. */
   .bve-layout-gap {

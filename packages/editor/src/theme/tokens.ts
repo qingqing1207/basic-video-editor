@@ -155,7 +155,7 @@ export const editorTokenDefinitions = {
   }),
 
   ...section("surface", {
-    canvas: color(ref("white"), ref("neutral-950")),
+    canvas: color(ref("neutral-100"), ref("neutral-950")),
     background: color(ref("white"), ref("neutral-950")),
     panel: color(ref("white"), ref("neutral-900")),
     foreground: color(ref("neutral-850"), ref("neutral-100")),
@@ -202,7 +202,7 @@ export const editorTokenDefinitions = {
   }),
 
   ...section("cue", {
-    cue: color(ref("blue-600"), ref("blue-400")),
+    cue: color(ref("neutral-850"), ref("neutral-100")),
     "cue-fill": color(mix(sys("cue"), 14)),
   }),
 
@@ -240,8 +240,8 @@ export const editorTokenDefinitions = {
   ...section("shape", {
     "radius-sm": length("4px"),
     "radius-control": length("6px"),
-    "radius-panel": length("10px"),
-    "radius-overlay": length("10px"),
+    "radius-panel": length("8px"),
+    "radius-overlay": length("8px"),
     "border-width": length("1px"),
     "focus-width": length("2px"),
     "focus-offset": length("2px"),

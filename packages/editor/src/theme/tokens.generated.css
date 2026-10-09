@@ -31,7 +31,7 @@
   --bve-ref-purple-600: #79519e;
   --bve-ref-teal-600: #337d69;
   --bve-ref-orange-400: #ff9a42;
-  --bve-canvas: var(--bve-ref-white);
+  --bve-canvas: var(--bve-ref-neutral-100);
   --bve-background: var(--bve-ref-white);
   --bve-panel: var(--bve-ref-white);
   --bve-foreground: var(--bve-ref-neutral-850);
@@ -64,7 +64,7 @@
   --bve-selected-hover-background: color-mix(in srgb, var(--bve-primary) 16%, transparent);
   --bve-selected-border: var(--bve-primary);
   --bve-ring: var(--bve-primary);
-  --bve-cue: var(--bve-ref-blue-600);
+  --bve-cue: var(--bve-ref-neutral-850);
   --bve-cue-fill: color-mix(in srgb, var(--bve-cue) 14%, transparent);
   --bve-destructive: var(--bve-ref-red-600);
   --bve-destructive-foreground: var(--bve-ref-white);
@@ -87,8 +87,8 @@
   --bve-line-height: 1.5;
   --bve-radius-sm: 4px;
   --bve-radius-control: 6px;
-  --bve-radius-panel: 10px;
-  --bve-radius-overlay: 10px;
+  --bve-radius-panel: 8px;
+  --bve-radius-overlay: 8px;
   --bve-border-width: 1px;
   --bve-focus-width: 2px;
   --bve-focus-offset: 2px;
@@ -165,7 +165,7 @@
   --bve-solid-foreground: var(--bve-ref-neutral-50);
   --bve-solid-hover: color-mix(in srgb, var(--bve-solid) 85%, var(--bve-ref-white));
   --bve-solid-pressed: color-mix(in srgb, var(--bve-solid) 76%, var(--bve-ref-black));
-  --bve-cue: var(--bve-ref-blue-400);
+  --bve-cue: var(--bve-ref-neutral-100);
   --bve-destructive: var(--bve-ref-red-400);
   --bve-destructive-foreground: var(--bve-ref-red-950);
   --bve-constructive: var(--bve-ref-green-400);

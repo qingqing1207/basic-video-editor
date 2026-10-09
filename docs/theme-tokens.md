@@ -61,7 +61,7 @@
 
 | 变量 | 类型 | 浅色默认 | 深色默认 | comfortable | Tailwind |
 | --- | --- | --- | --- | --- | --- |
-| `--bve-canvas` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-950)` | — | `bg-/text-/border-canvas` |
+| `--bve-canvas` | color | `var(--bve-ref-neutral-100)` | `var(--bve-ref-neutral-950)` | — | `bg-/text-/border-canvas` |
 | `--bve-background` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-950)` | — | `bg-/text-/border-background` |
 | `--bve-panel` | color | `var(--bve-ref-white)` | `var(--bve-ref-neutral-900)` | — | `bg-/text-/border-panel` |
 | `--bve-foreground` | color | `var(--bve-ref-neutral-850)` | `var(--bve-ref-neutral-100)` | — | `bg-/text-/border-foreground` |
@@ -108,7 +108,7 @@
 
 | 变量 | 类型 | 浅色默认 | 深色默认 | comfortable | Tailwind |
 | --- | --- | --- | --- | --- | --- |
-| `--bve-cue` | color | `var(--bve-ref-blue-600)` | `var(--bve-ref-blue-400)` | — | `bg-/text-/border-cue` |
+| `--bve-cue` | color | `var(--bve-ref-neutral-850)` | `var(--bve-ref-neutral-100)` | — | `bg-/text-/border-cue` |
 | `--bve-cue-fill` | color | `color-mix(in srgb, var(--bve-cue) 14%, transparent)` | 同浅色 | — | `bg-/text-/border-cue-fill` |
 
 ### 状态色
@@ -159,8 +159,8 @@
 | --- | --- | --- | --- | --- | --- |
 | `--bve-radius-sm` | length | `4px` | 同浅色 | — | `rounded-sm` |
 | `--bve-radius-control` | length | `6px` | 同浅色 | — | `rounded-control` |
-| `--bve-radius-panel` | length | `10px` | 同浅色 | — | `rounded-panel` |
-| `--bve-radius-overlay` | length | `10px` | 同浅色 | — | `rounded-overlay` |
+| `--bve-radius-panel` | length | `8px` | 同浅色 | — | `rounded-panel` |
+| `--bve-radius-overlay` | length | `8px` | 同浅色 | — | `rounded-overlay` |
 | `--bve-border-width` | length | `1px` | 同浅色 | — | — |
 | `--bve-focus-width` | length | `2px` | 同浅色 | — | — |
 | `--bve-focus-offset` | length | `2px` | 同浅色 | — | — |
