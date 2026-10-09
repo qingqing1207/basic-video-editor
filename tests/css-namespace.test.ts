@@ -32,4 +32,3 @@ describe("css namespace plugin: @layer flattening", () => {
     expect(selectors(out)).toEqual([".u", ".b", ".unlayered"]);
   });
 });
-});
